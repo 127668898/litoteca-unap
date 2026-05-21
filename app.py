@@ -237,6 +237,36 @@ if lista_hojas:
                     elif os.path.exists(ruta_png):
                         st.image(ruta_png, caption=f"Muestra {id_sel}", use_container_width=True)
         else:
-            # Si entras a una pestaña tipo reporte de texto (Casapalca, Sina, etc.), se renderiza de forma limpia
-            st.markdown(f'<h4 class="section-title">📋 VISTA DEL DOCUMENTO: {hoja_seleccionada.upper()}</h4>', unsafe_allow_html=True)
-            st.dataframe(df, use_container_width=True)
+            # =========================================================
+            # 6. NUEVA VISTA DINÁMICA PARA LOGUEOS (CASAPALCA, SINA, ETC)
+            # =========================================================
+            st.markdown(f'<h4 class="section-title">📄 REPORTE DE LOGUEO: {hoja_seleccionada.upper()}</h4>', unsafe_allow_html=True)
+            
+            # Creamos dos pestañas para que el usuario elija cómo interactuar
+            tab_tarjetas, tab_tabla = st.tabs(["🗂️ Vista Dinámica (Tarjetas)", "📊 Vista Original (Excel)"])
+            
+            with tab_tarjetas:
+                st.info("💡 Exploración interactiva. Se han omitido los espacios vacíos para una lectura limpia de las descripciones.")
+                
+                # Recorremos cada fila del Excel
+                for index, row in df.iterrows():
+                    # Extraemos solo las celdas que realmente tienen texto (ignoramos los NaN)
+                    celdas_validas = [str(val) for val in row if pd.notna(val) and str(val).strip() != ""]
+                    
+                    if celdas_validas:
+                        # Creamos un menú desplegable (expander) por cada bloque de información
+                        with st.expander(f"🔹 Registro de Datos (Fila {index + 1})", expanded=(index < 7)):
+                            # Distribuimos la información en columnas automáticas
+                            cols = st.columns(len(celdas_validas))
+                            for i, texto in enumerate(celdas_validas):
+                                with cols[i]:
+                                    # Mantenemos los saltos de línea originales del Excel y aplicamos diseño SEG
+                                    texto_formateado = texto.replace('\n', '<br>')
+                                    st.markdown(f"""
+                                    <div style='background-color:#ffffff; color:#111111; padding:15px; border-left: 4px solid #D4AF37; border-radius:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 14px;'>
+                                        {texto_formateado}
+                                    </div>
+                                    """, unsafe_allow_html=True)
+                                    
+            with tab_tabla:
+                st.dataframe(df, use_container_width=True)
