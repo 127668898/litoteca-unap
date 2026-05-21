@@ -247,14 +247,12 @@ if lista_hojas:
                     
                     if celdas_validas:
                         with st.expander(f"🔹 Registro de Datos (Fila {index + 1})", expanded=(index < 7)):
-                            cols = st.columns(len(celdas_validas))
+                           cols = st.columns(len(celdas_validas))
                             for i, texto in enumerate(celdas_validas):
                                 with cols[i]:
-                                    texto_formateado = texto.replace('\n', '<br>')
+                                    # Usamos white-space: pre-wrap y monospace para mantener la alineación de tu Excel
                                     st.markdown(f"""
-                                    <div style='background-color:#ffffff; color:#111111; padding:15px; border-left: 4px solid #D4AF37; border-radius:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 14px;'>
-                                        {texto_formateado}
-                                    </div>
+                                    <div style='background-color:#ffffff; color:#111111; padding:15px; border-left: 4px solid #D4AF37; border-radius:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 13px; font-family: monospace; white-space: pre-wrap;'>{texto}</div>
                                     """, unsafe_allow_html=True)
                                     
             with tab_tabla:
