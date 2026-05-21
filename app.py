@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import os
 
-# 1. CONFIGURACIÓN DE PÁGINA (Debe ser la primera línea)
+# 1. CONFIGURACIÓN DE PÁGINA
 st.set_page_config(
     page_title="Litoteca SEG UNAP - Privado",
     page_icon="🔒",
@@ -47,42 +47,64 @@ st.markdown("""
         padding: 30px;
         border-radius: 10px;
         border: 2px solid #D4AF37;
-        text-align: center;
-        max-width: 500px;
+        max-width: 450px;
         margin: 0 auto;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
     }
     </style>
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="main-title">LITOTECA SEG UNAP</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-banner">SOCIETY OF ECONOMIC GEOLOGISTS • ACCESO RESTRINGIDO</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-banner">SOCIETY OF ECONOMIC GEOLOGISTS • CONTROL DE ACCESO</div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 2. SISTEMA DE SEGURIDAD Y LOGIN
+# 2. SISTEMA DE SEGURIDAD (Usuario y Contraseña)
 # ---------------------------------------------------------
-# Aquí defines tu contraseña secreta
-CONTRASENA_SECRETA = "SegUnap2026" 
+# Aquí puedes agregar o cambiar los usuarios y sus claves autorizadas
+USUARIOS_PERMITIDOS = {
+    "seg_unap": "SegUnap2026",       # Usuario general del capítulo
+    "admin_litoteca": "UnapMuestras" # Usuario administrador
+}
 
-def verificar_contrasena():
-    """Devuelve True si el usuario ingresó la contraseña correcta."""
-    if st.session_state.get("password", "") == CONTRASENA_SECRETA:
+def verificar_credenciales():
+    """Valida si el par usuario/contraseña coincide con el diccionario."""
+    u_ingresado = st.session_state.get("input_usuario", "").strip()
+    p_ingresada = st.session_state.get("input_password", "").strip()
+    
+    if u_ingresado in USUARIOS_PERMITIDOS and USUARIOS_PERMITIDOS[u_ingresado] == p_ingresada:
         st.session_state["autenticado"] = True
     else:
         st.session_state["autenticado"] = False
+        st.session_state["intento_fallido"] = True
 
+# Inicializar estados de la sesión si no existen
 if "autenticado" not in st.session_state:
     st.session_state["autenticado"] = False
+if "intento_fallido" not in st.session_state:
+    st.session_state["intento_fallido"] = False
 
+# Si el usuario no está autenticado, se muestra el muro de login
 if not st.session_state["autenticado"]:
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
-    st.warning("🔒 **Plataforma Confidencial.** Por favor, ingrese la contraseña de acceso proporcionada por la directiva.")
-    st.text_input("Contraseña:", type="password", key="password", on_change=verificar_contrasena)
+    st.markdown("<h3 style='text-align: center; color: #111111;'>🔐 Iniciar Sesión</h3>", unsafe_allow_html=True)
+    st.caption("Esta plataforma contiene información geológica confidencial restringida para miembros autorizados.")
+    st.write("")
+    
+    # Campos de texto para credenciales
+    st.text_input("Usuario:", key="input_usuario")
+    st.text_input("Contraseña:", type="password", key="input_password")
+    st.write("")
+    
+    # Botón para procesar el ingreso
+    st.button("Ingresar al Sistema", on_click=verificar_credenciales, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
     
-    if st.session_state.get("password", "") != "" and st.session_state.get("password", "") != CONTRASENA_SECRETA:
-        st.error("❌ Contraseña incorrecta. Acceso denegado.")
+    # Mostrar mensaje de error si falló las credenciales
+    if st.session_state["intento_fallido"]:
+        st.write("")
+        st.error("❌ Usuario o contraseña incorrectos. Intente nuevamente.")
     
-    # st.stop() detiene el código aquí. Nada de lo que está abajo se ejecuta ni se envía al navegador.
+    # Detener ejecución del resto de la página
     st.stop()
 # ---------------------------------------------------------
 
@@ -110,6 +132,7 @@ def cargar_datos_hoja(ruta_excel, nombre_hoja):
 
 lista_hojas = obtener_nombres_hojas(ARCHIVO_EXCEL)
 
+# Mostrar controles principales
 col_hoja, _ = st.columns([1, 3])
 with col_hoja:
     hoja_seleccionada = st.selectbox("📂 PESTAÑA DEL EXCEL:", lista_hojas)
