@@ -54,6 +54,17 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# ---------------------------------------------------------
+# 2. ENCABEZADO INSTITUCIONAL Y LOGO
+# ---------------------------------------------------------
+# Creamos 3 columnas para centrar el logo perfectamente
+c1, c2, c3 = st.columns([2, 1, 2])
+with c2:
+    if os.path.exists("logo.png"):
+        st.image("logo.png", use_container_width=True)
+    elif os.path.exists("logo.jpg"):
+        st.image("logo.jpg", use_container_width=True)
+
 st.markdown('<div class="main-title">LITOTECA SEG UNAP</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-banner">SOCIETY OF ECONOMIC GEOLOGISTS • CONTROL DE ACCESO</div>', unsafe_allow_html=True)
 
