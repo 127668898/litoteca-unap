@@ -240,20 +240,18 @@ if lista_hojas:
             tab_tarjetas, tab_tabla = st.tabs(["🗂️ Vista Dinámica (Tarjetas)", "📊 Vista Original (Excel)"])
             
             with tab_tarjetas:
-                st.info("💡 Exploración interactiva. Se han omitido los espacios vacíos para una lectura limpia de las descripciones.")
+                st.info("💡 Exploración interactiva. Se han omitido los espacios vacíos para una lectura limpia.")
                 
                 for index, row in df.iterrows():
                     celdas_validas = [str(val) for val in row if pd.notna(val) and str(val).strip() != ""]
                     
                     if celdas_validas:
                         with st.expander(f"🔹 Registro de Datos (Fila {index + 1})", expanded=(index < 7)):
-                           cols = st.columns(len(celdas_validas))
+                            cols = st.columns(len(celdas_validas))
                             for i, texto in enumerate(celdas_validas):
                                 with cols[i]:
-                                    # Usamos white-space: pre-wrap y monospace para mantener la alineación de tu Excel
-                                    st.markdown(f"""
-                                    <div style='background-color:#ffffff; color:#111111; padding:15px; border-left: 4px solid #D4AF37; border-radius:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 13px; font-family: monospace; white-space: pre-wrap;'>{texto}</div>
-                                    """, unsafe_allow_html=True)
+                                    # Diseño en una sola línea a prueba de errores de GitHub
+                                    st.markdown(f"<div style='background-color:#ffffff; color:#111111; padding:15px; border-left: 4px solid #D4AF37; border-radius:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 13px; font-family: monospace; white-space: pre-wrap;'>{texto}</div>", unsafe_allow_html=True)
                                     
             with tab_tabla:
                 st.dataframe(df, use_container_width=True)
