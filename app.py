@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import os
 
-# 1. CONFIGURACIÓN DE PÁGINA (Portal Institucional SEG Oficial)
+# 1. CONFIGURACIÓN DE PÁGINA
 st.set_page_config(
     page_title="Portal SEG UNAP",
     page_icon="⚒️",
@@ -23,12 +23,10 @@ st.markdown("""
         background-color: #FFFFFF;
     }
     
-    /* Ajuste de márgenes superiores */
     .block-container {
         padding-top: 3.5rem !important; 
     }
     
-    /* Estilos del Título Principal junto al Logo */
     .header-title {
         color: #002855;
         font-size: 30px;
@@ -47,44 +45,68 @@ st.markdown("""
     }
     
     /* ---------------------------------------------------
-       MAGIA CSS: Convertir Tabs en la Barra de Navegación SEG 
+       BARRA DE NAVEGACIÓN PRINCIPAL (AZUL)
        --------------------------------------------------- */
     div[data-testid="stTabs"] {
         margin-top: 15px;
     }
-    .stTabs [data-baseweb="tab-list"] {
+    div[data-testid="stTabs"] > div[data-baseweb="tab-list"] {
         background-color: #002855;
         padding: 0;
         border-radius: 4px;
         box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
         gap: 0px;
     }
-    .stTabs [data-baseweb="tab"] {
+    div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button {
         color: #FFFFFF !important;
         font-size: 15px;
         font-weight: 500;
         padding: 15px 25px;
         border: none;
     }
-    .stTabs [data-baseweb="tab"]:hover {
+    div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button:hover {
         background-color: #001a38;
         color: #98793E !important;
     }
-    /* Pestaña Activa (Estilo botón dorado) */
-    .stTabs [aria-selected="true"] {
+    div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button[aria-selected="true"] {
         background-color: #98793E !important;
         color: #002855 !important;
         font-weight: bold;
         border-radius: 4px;
     }
-    /* Ocultar la línea azul nativa de Streamlit abajo de los tabs */
-    .stTabs [data-baseweb="tab-border"] {
+    
+    /* ---------------------------------------------------
+       SUB-MENÚ DESGLOSABLE (DORADO ESTILO SEG)
+       --------------------------------------------------- */
+    div[data-testid="stTabs"] div[data-testid="stTabs"] > div[data-baseweb="tab-list"] {
+        background-color: #98793E; /* Color dorado extraído de tu imagen */
+        margin-top: -15px;
+        border-radius: 0px 0px 4px 4px;
+        box-shadow: inset 0px 2px 4px rgba(0,0,0,0.1);
+    }
+    div[data-testid="stTabs"] div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button {
+        color: #FFFFFF !important;
+        font-size: 14px;
+        padding: 10px 20px;
+        font-weight: normal;
+    }
+    div[data-testid="stTabs"] div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button:hover {
+        background-color: #7A6132 !important; /* Dorado más oscuro al pasar el ratón */
+        color: #FFFFFF !important;
+    }
+    div[data-testid="stTabs"] div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button[aria-selected="true"] {
+        background-color: #7A6132 !important;
+        color: #FFFFFF !important;
+        font-weight: bold;
+        border-radius: 0px;
+    }
+
+    /* Ocultar las líneas inferiores feas de Streamlit */
+    [data-baseweb="tab-border"] {
         display: none !important;
     }
     
-    /* ---------------------------------------------------
-       Estilos del Login y Dashboard
-       --------------------------------------------------- */
+    /* Estilos Generales */
     div[data-testid="stButton"] button {
         background-color: #98793E !important;
         color: #FFFFFF !important;
@@ -96,35 +118,14 @@ st.markdown("""
     }
     div[data-testid="stButton"] button:hover {
         background-color: #7A6132 !important;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.15) !important;
     }
     .stTextInput>div>div>input {
         background-color: #F8F9FA;
         border: 1px solid #CCCCCC;
-        border-radius: 4px;
     }
     .stTextInput>div>div>input:focus {
         border-color: #002855;
         box-shadow: 0 0 0 0.2rem rgba(0, 40, 85, 0.25);
-    }
-    .login-links {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 14px;
-    }
-    .login-links a {
-        color: #0056b3;
-        text-decoration: underline;
-    }
-    .login-footer {
-        text-align: center;
-        margin-top: 25px;
-        font-size: 13px;
-        color: #666666;
-    }
-    .login-footer a {
-        color: #0056b3;
-        text-decoration: none;
     }
     .section-title {
         color: #002855; 
@@ -134,20 +135,11 @@ st.markdown("""
         margin-top: 20px;
         margin-bottom: 15px;
     }
-    
-    /* Estilo para los textos informativos */
     .info-text {
         color: #333333;
         font-size: 16px;
         line-height: 1.6;
         text-align: justify;
-    }
-    .board-list {
-        margin-top: 15px;
-        font-size: 16px;
-    }
-    .board-list li {
-        margin-bottom: 8px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -179,26 +171,44 @@ tab_acerca, tab_litoteca, tab_equipo, tab_fundacion = st.tabs([
 ])
 
 # ==========================================
-# PESTAÑA 1: ACERCA DE (PÚBLICO)
+# PESTAÑA 1: ACERCA DE (CON SUB-MENÚ DORADO)
 # ==========================================
 with tab_acerca:
-    st.write("")
-    st.markdown('<h3 class="section-title">Capítulo Estudiantil SEG UNAP - Puno</h3>', unsafe_allow_html=True)
-    st.markdown("""
-    <div class="info-text">
-        El Capítulo Estudiantil de la <b>Society of Economic Geologists (SEG)</b> de la Universidad Nacional del Altiplano (UNAP) en Puno, es una organización académica sin fines de lucro conformada por estudiantes, egresados y docentes de la Facultad de Ingeniería Geológica y Metalúrgica.<br><br>
-        Nuestro principal objetivo es avanzar en el conocimiento de la geología de yacimientos minerales, sirviendo como un puente directo entre la excelencia académica y la industria minera. Situados estratégicamente en el sur del Perú, una de las regiones metalogenéticas más ricas y diversas de los Andes, enfocamos nuestros esfuerzos en el estudio de sistemas epitermales, pórfidos, skarn y depósitos polimetálicos.<br><br>
-        A través de la organización de conferencias técnicas, talleres prácticos de logueo geológico, mapeo estructural y excursiones a terreno, fomentamos el desarrollo profesional, ético y científico de las futuras generaciones de geólogos económicos del país.
-    </div>
-    """, unsafe_allow_html=True)
+    # Sub-menú estilizado simulando el desglosable
+    sub_sociedad, sub_eventos, sub_contacto = st.tabs(["Acerca de la Sociedad", "Actividades y Eventos", "Contáctanos"])
+    
+    with sub_sociedad:
+        st.write("")
+        st.markdown('<h3 class="section-title">Capítulo Estudiantil SEG UNAP - Puno</h3>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="info-text">
+            El Capítulo Estudiantil de la <b>Society of Economic Geologists (SEG)</b> de la Universidad Nacional del Altiplano (UNAP) en Puno, es una organización académica sin fines de lucro conformada por estudiantes, egresados y docentes de la Facultad de Ingeniería Geológica y Metalúrgica.<br><br>
+            Nuestro principal objetivo es avanzar en el conocimiento de la geología de yacimientos minerales, sirviendo como un puente directo entre la excelencia académica y la industria minera. Situados estratégicamente en el sur del Perú, una de las regiones metalogenéticas más ricas y diversas de los Andes, enfocamos nuestros esfuerzos en el estudio de sistemas epitermales, pórfidos, skarn y depósitos polimetálicos.
+        </div>
+        """, unsafe_allow_html=True)
+
+    with sub_eventos:
+        st.write("")
+        st.markdown('<h3 class="section-title">Calendario Académico y Eventos</h3>', unsafe_allow_html=True)
+        st.info("📌 Próximamente: Aquí anunciaremos nuestros webinars técnicos, talleres de logueo, salidas de campo y certificaciones del capítulo.")
+        
+    with sub_contacto:
+        st.write("")
+        st.markdown('<h3 class="section-title">Únete al Capítulo</h3>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="info-text">
+            ¿Interesado en la geología económica? Síguenos en nuestras redes oficiales y entérate de las convocatorias para formar parte de la directiva o asistir a nuestros próximos eventos de terreno.<br><br>
+            📧 <b>Correo Institucional:</b> [Añadir correo SEG UNAP]<br>
+            📱 <b>Facebook/LinkedIn:</b> [Añadir links]
+        </div>
+        """, unsafe_allow_html=True)
 
 # ==========================================
-# PESTAÑA 2: LITOTECA (REQUIERE LOGIN - INTOCABLE)
+# PESTAÑA 2: LITOTECA (PROTEGIDA CON LOGIN)
 # ==========================================
 with tab_litoteca:
     st.write("")
     
-    # Lógica de Seguridad
     USUARIOS_PERMITIDOS = {
         "seg_unap": "SegUnap2026",  
         "mayersyerson17@gmail.com": "927685",        
@@ -221,9 +231,7 @@ with tab_litoteca:
     if "intento_fallido" not in st.session_state:
         st.session_state["intento_fallido"] = False
 
-    # MURO DE LOGIN (Recreación exacta del sitio SEG)
     if not st.session_state["autenticado"]:
-        st.write("")
         st.write("")
         _, col_login, _ = st.columns([2, 2.5, 2])
         
@@ -238,17 +246,11 @@ with tab_litoteca:
                 st.error("❌ Credenciales incorrectas. Verifique su acceso.")
                 
             st.markdown("""
-                <div class="login-links">
-                    <a href="#">¿Olvidaste el nombre de usuario?</a> | <a href="#">¿Olvidaste la contraseña?</a><br><br>
-                    <a href="#">Crea una cuenta no miembro</a>
-                </div>
-                <div class="login-footer">
-                    Al iniciar sesión, aceptas haber leído y aceptado los <a href="#">Términos y Condiciones</a>, 
-                    la <a href="#">Política de Privacidad</a> y la <a href="#">Política de Galletas</a>.
+                <div style="text-align: center; margin-top: 20px; font-size: 14px;">
+                    <a href="#" style="color: #0056b3;">¿Olvidaste la contraseña?</a>
                 </div>
             """, unsafe_allow_html=True)
             
-    # DASHBOARD PRIVADO (Gráficos, Filtros, Tablas y Tarjetas Dinámicas)
     else:
         st.success("✅ Autenticación exitosa. Bienvenido a la Base de Datos de la Litoteca.")
         
@@ -352,7 +354,7 @@ with tab_litoteca:
 
                     col_tabla, col_foto = st.columns([2, 1])
                     with col_tabla:
-                        st.markdown(f'<h4 class="section-title">📋 MATRIZ DE DATOS (Filtrada)</h4>', unsafe_allow_html=True)
+                        st.markdown(f'<h4 class="section-title">📋 MATRIZ DE DATOS</h4>', unsafe_allow_html=True)
                         st.dataframe(df_filtrado, use_container_width=True, hide_index=True)
                         
                     with col_foto:
@@ -381,7 +383,6 @@ with tab_litoteca:
                     
                     with tab_tarjetas:
                         st.info("💡 Exploración interactiva. Formato estructurado para descripciones geológicas de campo.")
-                        
                         for index, row in df.iterrows():
                             celdas_validas = [str(val) for val in row if pd.notna(val) and str(val).strip() != ""]
                             
@@ -391,47 +392,49 @@ with tab_litoteca:
                                     for i, texto in enumerate(celdas_validas):
                                         with cols[i]:
                                             st.markdown(f"<div style='background-color:#ffffff; color:#111111; padding:15px; border-left: 4px solid #002855; border-radius:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 13px; font-family: monospace; white-space: pre-wrap;'>{texto}</div>", unsafe_allow_html=True)
-                                            
                     with tab_tabla:
                         st.dataframe(df, use_container_width=True)
 
 # ==========================================
-# PESTAÑA 3: EQUIPO Y PARTICIPANTES (JUNTA DIRECTIVA)
+# PESTAÑA 3: PARTICIPANTES (CON SUB-MENÚ DORADO)
 # ==========================================
 with tab_equipo:
-    st.write("")
-    st.markdown('<h3 class="section-title">Junta Directiva SEG UNAP</h3>', unsafe_allow_html=True)
-    st.markdown("""
-    <div class="info-text">
-        El Capítulo Estudiantil SEG UNAP está liderado por un equipo de estudiantes comprometidos con la difusión del conocimiento en geología económica. Nuestra directiva se encarga de planificar, organizar y ejecutar todas las actividades académicas, de campo y la gestión técnica de nuestra Litoteca.<br><br>
-        <b>Miembros de la Directiva:</b>
-        <ul class="board-list">
-            <li><b>Presidente(a):</b> [Nombre del Presidente]</li>
-            <li><b>Vicepresidente(a):</b> [Nombre del Vicepresidente]</li>
-            <li><b>Secretario(a):</b> [Nombre del Secretario]</li>
-            <li><b>Tesorero(a):</b> [Nombre del Tesorero]</li>
-            <li><b>Vocal de Litoteca:</b> Gary Bustinza</li>
-            <li><b>Vocal [Otro cargo]:</b> [Nombre]</li>
-        </ul>
-        <i>* En construcción: Puedes editar directamente el código para actualizar la lista completa de la junta.</i>
-    </div>
-    """, unsafe_allow_html=True)
+    sub_junta, sub_proyectos = st.tabs(["Junta Directiva", "Proyectos de Campo"])
+    
+    with sub_junta:
+        st.write("")
+        st.markdown('<h3 class="section-title">Junta Directiva SEG UNAP</h3>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="info-text">
+            El Capítulo Estudiantil SEG UNAP está liderado por un equipo de estudiantes comprometidos con la difusión del conocimiento en geología económica.<br><br>
+            <ul>
+                <li><b>Presidente(a):</b> [Nombre]</li>
+                <li><b>Vicepresidente(a):</b> [Nombre]</li>
+                <li><b>Secretario(a):</b> [Nombre]</li>
+                <li><b>Tesorero(a):</b> [Nombre]</li>
+                <li><b>Vocal de Litoteca:</b> Gary Bustinza</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with sub_proyectos:
+        st.write("")
+        st.markdown('<h3 class="section-title">Proyectos de Investigación y Mapeo</h3>', unsafe_allow_html=True)
+        st.info("📌 Espacio reservado para documentar futuras salidas a terreno, recolección de muestras y análisis metalogenético en la región de Puno.")
 
 # ==========================================
-# PESTAÑA 4: FUNDACIONES (PÚBLICO)
+# PESTAÑA 4: FUNDACIONES
 # ==========================================
 with tab_fundacion:
     st.write("")
     st.markdown('<h3 class="section-title">Respaldo de la SEG Foundation</h3>', unsafe_allow_html=True)
     st.markdown("""
     <div class="info-text">
-        El Capítulo Estudiantil de la UNAP cuenta con el prestigioso aval y apoyo de la <b>Society of Economic Geologists Foundation (SEGF)</b>. La Fundación es el pilar que sostiene el desarrollo de estudiantes de geología a nivel mundial, proporcionando recursos invaluables para la educación e investigación.<br><br>
-        A través de la membresía SEG y la afiliación a nuestro capítulo, los estudiantes tienen la oportunidad de postular a múltiples beneficios globales:
+        El Capítulo Estudiantil de la UNAP cuenta con el prestigioso aval y apoyo de la <b>Society of Economic Geologists Foundation (SEGF)</b>, pilar que sostiene el desarrollo de estudiantes de geología a nivel mundial.<br><br>
+        A través de la membresía SEG, los estudiantes pueden postular a:
         <ul>
-            <li><b>Subvenciones de Investigación Estudiantil (Student Research Grants):</b> Fondos económicos sustanciales (como el <i>Hugh E. McKinstry Fund</i>) para financiar trabajos de tesis, análisis de laboratorio y mapeo de campo en yacimientos minerales.</li>
-            <li><b>Apoyo para Viajes y Campo:</b> Becas (como el <i>Stewart R. Wallace Fund</i>) diseñadas para ayudar a los capítulos a organizar excursiones a yacimientos de clase mundial y asistir a conferencias internacionales de la SEG.</li>
-            <li><b>Red Global de Mentores:</b> Acceso directo a profesionales líderes de la industria minera, investigadores de renombre y oportunidades de <i>networking</i> exclusivas.</li>
+            <li><b>Subvenciones de Investigación (Student Research Grants):</b> Fondos para financiar trabajos de tesis y análisis de laboratorio.</li>
+            <li><b>Apoyo para Viajes:</b> Becas para organizar excursiones a yacimientos y asistir a conferencias internacionales.</li>
         </ul>
-        Agradecemos profundamente a la SEG Foundation por su compromiso histórico con la formación de la próxima generación de líderes en geología económica.
     </div>
     """, unsafe_allow_html=True)
