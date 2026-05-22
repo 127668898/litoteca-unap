@@ -66,11 +66,13 @@ st.markdown('<div class="main-title">LITOTECA SEG UNAP</div>', unsafe_allow_html
 st.markdown('<div class="sub-banner">SOCIETY OF ECONOMIC GEOLOGISTS • CONTROL DE ACCESO</div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 2. SISTEMA DE SEGURIDAD (Usuario y Contraseña)
+# 2. SISTEMA DE SEGURIDAD (4 Usuarios Autorizados)
 # ---------------------------------------------------------
 USUARIOS_PERMITIDOS = {
-    "seg_unap": "SegUnap2026",       
-    "admin_litoteca": "UnapMuestras" 
+    "seg_unap": "SegUnap2026",  # Usuario 1
+    "mayersyerson17@gmail.com": "927685",        # Usuario 2
+    "richardcoaquiraapaza@gmail.com": "925371",       # Usuario 3
+    "carbajaljuancarlos194@gmail.com": "927700"    # Usuario 4
 }
 
 def verificar_credenciales():
