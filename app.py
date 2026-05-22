@@ -23,16 +23,17 @@ st.markdown("""
         background-color: #FFFFFF;
     }
     
-    /* Eliminar espacio superior por defecto de Streamlit para que el header suba */
+    /* Ajustar espacio superior para evitar el recorte del texto */
     .block-container {
-        padding-top: 2rem !important;
+        padding-top: 3.5rem !important; 
     }
     
     /* Estilos del Título Principal junto al Logo */
     .header-title {
         color: #002855;
-        font-size: 28px;
-        font-weight: 600;
+        font-size: 30px;
+        font-weight: 700;
+        margin-top: 20px; /* Centra el texto con el logo y lo aleja del borde superior */
         margin-bottom: 0px;
         padding-bottom: 0px;
         line-height: 1.2;
@@ -172,13 +173,11 @@ if not st.session_state["autenticado"]:
         st.text_input("Password", type="password", key="input_password", placeholder="••••••••")
         st.write("")
         
-        # Botón que ocupará el 100% del ancho (estilizado en el CSS superior)
         st.button("Sign In", on_click=verificar_credenciales, use_container_width=True)
         
         if st.session_state["intento_fallido"]:
             st.error("❌ Credenciales incorrectas. Intente nuevamente.")
             
-        # Textos y enlaces decorativos inferiores (idénticos a la web de SEG)
         st.markdown("""
             <div class="login-links">
                 <a href="#">Forgot username?</a> | <a href="#">Forgot password?</a><br><br>
@@ -190,7 +189,6 @@ if not st.session_state["autenticado"]:
             </div>
         """, unsafe_allow_html=True)
     
-    # Detener la carga del dashboard si no está logueado
     st.stop()
 # ---------------------------------------------------------
 
