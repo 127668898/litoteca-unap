@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilo CSS Avanzado SEG
+# Estilo CSS Avanzado SEG (Verde Institucional y Dorado)
 st.markdown("""
     <style>
     .main-title {
@@ -18,7 +18,7 @@ st.markdown("""
         font-weight: bold;
         color: #D4AF37; 
         text-align: center;
-        background-color: #111111; 
+        background-color: #0B4F3A; 
         padding: 20px;
         border-radius: 10px 10px 0px 0px;
         margin-bottom: 0px;
@@ -26,7 +26,7 @@ st.markdown("""
     }
     .sub-banner {
         background-color: #D4AF37; 
-        color: #111111; 
+        color: #0B4F3A; 
         padding: 8px;
         text-align: center;
         font-weight: bold;
@@ -35,7 +35,7 @@ st.markdown("""
         margin-bottom: 30px;
     }
     .section-title {
-        color: #111111;
+        color: #0B4F3A;
         border-left: 5px solid #D4AF37;
         padding-left: 10px;
         font-weight: bold;
@@ -46,7 +46,7 @@ st.markdown("""
         background-color: #f4f4f4;
         padding: 30px;
         border-radius: 10px;
-        border: 2px solid #D4AF37;
+        border: 2px solid #0B4F3A;
         max-width: 450px;
         margin: 0 auto;
         box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
@@ -92,7 +92,7 @@ if "intento_fallido" not in st.session_state:
 
 if not st.session_state["autenticado"]:
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center; color: #111111;'>🔐 Iniciar Sesión</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center; color: #0B4F3A;'>🔐 Iniciar Sesión</h3>", unsafe_allow_html=True)
     st.caption("Plataforma restringida para personal autorizado.")
     st.write("")
     
@@ -192,7 +192,7 @@ if lista_hojas:
                         fig_torta = px.pie(
                             conteo, values='Cantidad', names='Tipo de deposito', 
                             title="Distribución por Tipo de Depósito",
-                            color_discrete_sequence=['#D4AF37', '#222222', '#555555', '#AA8822', '#CCCCCC']
+                            color_discrete_sequence=['#0B4F3A', '#D4AF37', '#1E7B58', '#E6C259', '#708090']
                         )
                         st.plotly_chart(fig_torta, use_container_width=True)
                         
@@ -203,7 +203,7 @@ if lista_hojas:
                         fig_barras = px.bar(
                             conteo, x='EMPRESA', y='Cantidad', 
                             title="Muestras por Empresa",
-                            text_auto=True, color_discrete_sequence=['#D4AF37']
+                            text_auto=True, color_discrete_sequence=['#0B4F3A']
                         )
                         st.plotly_chart(fig_barras, use_container_width=True)
 
@@ -252,12 +252,7 @@ if lista_hojas:
                             cols = st.columns(len(celdas_validas))
                             for i, texto in enumerate(celdas_validas):
                                 with cols[i]:
-                                    texto_formateado = texto.replace('\n', '<br>')
-                                    st.markdown(f"""
-                                    <div style='background-color:#ffffff; color:#111111; padding:15px; border-left: 4px solid #D4AF37; border-radius:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 14px;'>
-                                        {texto_formateado}
-                                    </div>
-                                    """, unsafe_allow_html=True)
+                                    st.markdown(f"<div style='background-color:#ffffff; color:#111111; padding:15px; border-left: 4px solid #0B4F3A; border-radius:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 13px; font-family: monospace; white-space: pre-wrap;'>{texto}</div>", unsafe_allow_html=True)
                                     
             with tab_tabla:
                 st.dataframe(df, use_container_width=True)
