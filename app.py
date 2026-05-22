@@ -7,43 +7,85 @@ import os
 st.set_page_config(
     page_title="Litoteca SEG UNAP - Privado",
     page_icon="🔒",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
-# Paleta de Colores Oficial SEG (Extraída de la web oficial)
+# Paleta de Colores Oficial SEG
 # Azul Marino SEG: #002855
 # Dorado/Bronce SEG: #98793E
 # Fondo: #FFFFFF (Blanco Puro)
 
 st.markdown("""
     <style>
+    /* Fondo General Blanco Puro */
     .stApp {
         background-color: #FFFFFF;
     }
     
-    .main-title {
-        font-size:36px !important;
-        font-weight: bold;
-        color: #98793E; 
-        text-align: center;
-        background-color: #002855; 
-        padding: 20px;
-        border-radius: 10px 10px 0px 0px;
+    /* Eliminar espacio superior por defecto de Streamlit para que el header suba */
+    .block-container {
+        padding-top: 2rem !important;
+    }
+    
+    /* Estilos del Título Principal junto al Logo */
+    .header-title {
+        color: #002855;
+        font-size: 28px;
+        font-weight: 600;
         margin-bottom: 0px;
-        letter-spacing: 2px;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        padding-bottom: 0px;
+        line-height: 1.2;
     }
-    .sub-banner {
-        background-color: #98793E; 
-        color: #FFFFFF; 
-        padding: 8px;
+    .header-subtitle {
+        color: #98793E;
+        font-size: 16px;
+        font-style: italic;
+        margin-top: 0px;
+        padding-top: 0px;
+    }
+    
+    /* Barra de Navegación Estilo SEG */
+    .seg-navbar {
+        background-color: #002855;
+        color: #FFFFFF;
+        padding: 12px 0px;
         text-align: center;
-        font-weight: bold;
-        border-radius: 0px 0px 10px 10px;
         font-size: 15px;
-        margin-bottom: 30px;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
+        font-weight: 500;
+        letter-spacing: 1px;
+        margin-top: 15px;
+        margin-bottom: 40px;
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
     }
+
+    /* Modificación del Botón de Login para que sea idéntico al de la SEG */
+    div[data-testid="stButton"] button {
+        background-color: #98793E !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        padding: 10px 20px !important;
+        font-weight: 500 !important;
+        border-radius: 4px !important;
+        transition: 0.3s;
+    }
+    div[data-testid="stButton"] button:hover {
+        background-color: #7A6132 !important;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.15) !important;
+    }
+    
+    /* Estilos de los inputs */
+    .stTextInput>div>div>input {
+        background-color: #F8F9FA;
+        border: 1px solid #CCCCCC;
+        border-radius: 4px;
+    }
+    .stTextInput>div>div>input:focus {
+        border-color: #002855;
+        box-shadow: 0 0 0 0.2rem rgba(0, 40, 85, 0.25);
+    }
+    
+    /* Títulos de sección internos */
     .section-title {
         color: #002855; 
         border-left: 5px solid #98793E; 
@@ -52,39 +94,52 @@ st.markdown("""
         margin-top: 20px;
         margin-bottom: 15px;
     }
-    .login-box {
-        background-color: #FFFFFF; 
-        padding: 30px;
-        border-radius: 12px;
-        border: 2px solid #002855; 
-        max-width: 450px;
-        margin: 0 auto;
-        box-shadow: 0px 8px 20px rgba(0, 40, 85, 0.15); 
-    }
     
-    .stTextInput>div>div>input {
-        border-color: #002855;
+    /* Enlaces decorativos del login */
+    .login-links {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
     }
-    .stTextInput>div>div>input:focus {
-        border-color: #98793E;
-        box-shadow: 0 0 0 0.2rem rgba(152, 121, 62, 0.25);
+    .login-links a {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+    .login-footer {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 13px;
+        color: #666666;
+    }
+    .login-footer a {
+        color: #0056b3;
+        text-decoration: none;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Carga de Logo Institucional
-c1, c2, c3 = st.columns([2, 1, 2])
-with c2:
+# ---------------------------------------------------------
+# 2. ENCABEZADO Y BARRA DE NAVEGACIÓN (SIEMPRE VISIBLES)
+# ---------------------------------------------------------
+# Layout del logo a la izquierda y texto a la derecha
+col_logo, col_texto = st.columns([1, 6])
+with col_logo:
     if os.path.exists("logo.jpg"):
-        st.image("logo.jpg", use_container_width=True)
+        st.image("logo.jpg", width=120)
     elif os.path.exists("logo.png"):
-        st.image("logo.png", use_container_width=True)
+        st.image("logo.png", width=120)
 
-st.markdown('<div class="main-title">LITOTECA SEG UNAP</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-banner">SOCIETY OF ECONOMIC GEOLOGISTS • CONTROL DE ACCESO</div>', unsafe_allow_html=True)
+with col_texto:
+    st.markdown("""
+        <div class="header-title">LITOTECA SEG UNAP</div>
+        <div class="header-subtitle">Society of Economic Geologists Student Chapter</div>
+    """, unsafe_allow_html=True)
+
+# Barra Azul de Navegación
+st.markdown('<div class="seg-navbar">SISTEMA DE CONTROL DE ACCESO • BASE DE DATOS GEOLÓGICA</div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 2. SISTEMA DE SEGURIDAD (4 Usuarios Autorizados)
+# 3. SISTEMA DE SEGURIDAD (Login Estilo Oficial)
 # ---------------------------------------------------------
 USUARIOS_PERMITIDOS = {
     "seg_unap": "SegUnap2026",  
@@ -109,27 +164,39 @@ if "intento_fallido" not in st.session_state:
     st.session_state["intento_fallido"] = False
 
 if not st.session_state["autenticado"]:
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center; color: #002855; margin-top:0;'>🔐 Iniciar Sesión</h3>", unsafe_allow_html=True)
-    st.caption("Plataforma restringida para miembros autorizados de la directiva SEG UNAP.")
-    st.write("")
+    # Centrar el formulario usando columnas
+    _, col_login, _ = st.columns([1.5, 2, 1.5])
     
-    st.text_input("Usuario (Email):", key="input_usuario")
-    st.text_input("Contraseña (DNI):", type="password", key="input_password")
-    st.write("")
-    
-    st.button("Ingresar al Sistema", on_click=verificar_credenciales, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    if st.session_state["intento_fallido"]:
+    with col_login:
+        st.text_input("Username", key="input_usuario", placeholder="Ingrese su correo o usuario")
+        st.text_input("Password", type="password", key="input_password", placeholder="••••••••")
         st.write("")
-        st.error("❌ Credenciales incorrectas. Verifique su email o DNI.")
+        
+        # Botón que ocupará el 100% del ancho (estilizado en el CSS superior)
+        st.button("Sign In", on_click=verificar_credenciales, use_container_width=True)
+        
+        if st.session_state["intento_fallido"]:
+            st.error("❌ Credenciales incorrectas. Intente nuevamente.")
+            
+        # Textos y enlaces decorativos inferiores (idénticos a la web de SEG)
+        st.markdown("""
+            <div class="login-links">
+                <a href="#">Forgot username?</a> | <a href="#">Forgot password?</a><br><br>
+                <a href="#">Create a non-member account</a>
+            </div>
+            <div class="login-footer">
+                By signing in, you agree that you have read and agree to <a href="#">Terms and Conditions</a>, 
+                and <a href="#">Privacy Policy</a>, and <a href="#">Cookie Policy</a>.
+            </div>
+        """, unsafe_allow_html=True)
     
+    # Detener la carga del dashboard si no está logueado
     st.stop()
 # ---------------------------------------------------------
 
+
 # =========================================================
-# CONTENIDO PRIVADO (SOLO ACCESIBLE TRAS LOGIN)
+# 4. CONTENIDO PRIVADO (DASHBOARD)
 # =========================================================
 
 ARCHIVO_EXCEL = "datos_muestras.xlsx"
@@ -154,7 +221,7 @@ lista_hojas = obtener_nombres_hojas(ARCHIVO_EXCEL)
 if lista_hojas:
     col_hoja, _ = st.columns([1, 3])
     with col_hoja:
-        hoja_seleccionada = st.selectbox("📂 PESTAÑA ACTIVA (Proyecto):", lista_hojas)
+        hoja_seleccionada = st.selectbox("📂 SELECCIONAR PESTAÑA / PROYECTO:", lista_hojas)
 
     df = cargar_datos_hoja(ARCHIVO_EXCEL, hoja_seleccionada)
 
@@ -162,7 +229,7 @@ if lista_hojas:
         if 'CODIGO DE MUESTRA' in df.columns:
             df_filtrado = df.copy()
 
-            st.markdown('<h3 class="section-title">🔍 FILTROS Y SEGMENTADORES DE BASE DE DATOS</h3>', unsafe_allow_html=True)
+            st.markdown('<h3 class="section-title">🔍 FILTROS DE BÚSQUEDA</h3>', unsafe_allow_html=True)
             
             filtros_actuales = []
             if 'U.M.' in df.columns: filtros_actuales.append('U.M.')
@@ -198,7 +265,7 @@ if lista_hojas:
             st.metric("TOTAL REGISTROS FILTRADOS", len(df_filtrado))
             st.write("---")
 
-            st.markdown('<h3 class="section-title">📊 DIAGRAMAS GEOLÓGICOS INTERACTIVOS</h3>', unsafe_allow_html=True)
+            st.markdown('<h3 class="section-title">📊 DIAGRAMAS INTERACTIVOS</h3>', unsafe_allow_html=True)
             
             if not df_filtrado.empty:
                 g1, g2 = st.columns(2)
@@ -245,31 +312,31 @@ if lista_hojas:
                     um_text = fila['U.M.'] if 'U.M.' in df_filtrado.columns else "N/A"
                     desc_text = fila['Descripcion'] if 'Descripcion' in df_filtrado.columns else "N/A"
                     
-                    st.info(f"**U.M.:** {um_text} \n\n **Descripción Visual:** {desc_text}")
+                    st.info(f"📍 **U.M.:** {um_text} \n\n 🔬 **Descripción:** {desc_text}")
                     
                     ruta_jpg = f"fotos/{id_sel}.jpg"
                     ruta_png = f"fotos/{id_sel}.png"
                     
                     if os.path.exists(ruta_jpg):
-                        st.image(ruta_jpg, caption=f"Muestra de mano: {id_sel}", use_container_width=True)
+                        st.image(ruta_jpg, caption=f"Muestra: {id_sel}", use_container_width=True)
                     elif os.path.exists(ruta_png):
-                        st.image(ruta_png, caption=f"Muestra de mano: {id_sel}", use_container_width=True)
+                        st.image(ruta_png, caption=f"Muestra: {id_sel}", use_container_width=True)
         else:
             # =========================================================
-            # 6. NUEVA VISTA DINÁMICA PARA LOGUEOS (CASAPALCA, SINA, ETC)
+            # VISTA PARA FORMATOS DE LOGUEO (CASAPALCA, SINA, ETC)
             # =========================================================
-            st.markdown(f'<h4 class="section-title">📄 REPORTE GEOLÓGICO DE LOGUEO: {hoja_seleccionada.upper()}</h4>', unsafe_allow_html=True)
+            st.markdown(f'<h4 class="section-title">📄 REPORTE DE LOGUEO: {hoja_seleccionada.upper()}</h4>', unsafe_allow_html=True)
             
-            tab_tarjetas, tab_tabla = st.tabs(["🗂️ Vista Dinámica (Tarjetas Monospace)", "📊 Vista Original (Excel Tabla)"])
+            tab_tarjetas, tab_tabla = st.tabs(["🗂️ Vista Dinámica (Tarjetas)", "📊 Vista Original (Excel)"])
             
             with tab_tarjetas:
-                st.info("💡 Exploración interactiva de logueos geológicos. Se han omitido los espacios vacíos y se usa fuente 'Monospace' para respetar la alineación original.")
+                st.info("💡 Exploración interactiva. Formato estructurado para descripciones geológicas de campo.")
                 
                 for index, row in df.iterrows():
                     celdas_validas = [str(val) for val in row if pd.notna(val) and str(val).strip() != ""]
                     
                     if celdas_validas:
-                        with st.expander(f"🔹 Bloque de Registro Técnico (Fila Excel {index + 1})", expanded=(index < 7)):
+                        with st.expander(f"🔹 Bloque de Registro Técnico (Fila {index + 1})", expanded=(index < 7)):
                             cols = st.columns(len(celdas_validas))
                             for i, texto in enumerate(celdas_validas):
                                 with cols[i]:
