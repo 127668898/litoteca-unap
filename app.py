@@ -45,68 +45,40 @@ st.markdown("""
     }
     
     /* ---------------------------------------------------
-       BARRA DE NAVEGACIÓN PRINCIPAL (AZUL)
+       BARRA DE NAVEGACIÓN PRINCIPAL Y SUB-MENÚS (DISEÑO ORIGINAL LIMPIO)
        --------------------------------------------------- */
     div[data-testid="stTabs"] {
         margin-top: 15px;
     }
-    div[data-testid="stTabs"] > div[data-baseweb="tab-list"] {
+    .stTabs [data-baseweb="tab-list"] {
         background-color: #002855;
         padding: 0;
         border-radius: 4px;
         box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
         gap: 0px;
     }
-    div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button {
+    .stTabs [data-baseweb="tab"] {
         color: #FFFFFF !important;
         font-size: 15px;
         font-weight: 500;
         padding: 15px 25px;
         border: none;
     }
-    div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button:hover {
+    .stTabs [data-baseweb="tab"]:hover {
         background-color: #001a38;
         color: #98793E !important;
     }
-    div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button[aria-selected="true"] {
+    .stTabs [aria-selected="true"] {
         background-color: #98793E !important;
         color: #002855 !important;
         font-weight: bold;
         border-radius: 4px;
     }
-    
-    /* ---------------------------------------------------
-       SUB-MENÚ DESGLOSABLE (DORADO ESTILO SEG)
-       --------------------------------------------------- */
-    div[data-testid="stTabs"] div[data-testid="stTabs"] > div[data-baseweb="tab-list"] {
-        background-color: #98793E; /* Color dorado extraído de tu imagen */
-        margin-top: -15px;
-        border-radius: 0px 0px 4px 4px;
-        box-shadow: inset 0px 2px 4px rgba(0,0,0,0.1);
-    }
-    div[data-testid="stTabs"] div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button {
-        color: #FFFFFF !important;
-        font-size: 14px;
-        padding: 10px 20px;
-        font-weight: normal;
-    }
-    div[data-testid="stTabs"] div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button:hover {
-        background-color: #7A6132 !important; /* Dorado más oscuro al pasar el ratón */
-        color: #FFFFFF !important;
-    }
-    div[data-testid="stTabs"] div[data-testid="stTabs"] > div[data-baseweb="tab-list"] button[aria-selected="true"] {
-        background-color: #7A6132 !important;
-        color: #FFFFFF !important;
-        font-weight: bold;
-        border-radius: 0px;
-    }
-
-    /* Ocultar las líneas inferiores feas de Streamlit */
-    [data-baseweb="tab-border"] {
+    .stTabs [data-baseweb="tab-border"] {
         display: none !important;
     }
     
-    /* Estilos Generales */
+    /* Estilos Generales de Botones e Inputs */
     div[data-testid="stButton"] button {
         background-color: #98793E !important;
         color: #FFFFFF !important;
@@ -118,15 +90,18 @@ st.markdown("""
     }
     div[data-testid="stButton"] button:hover {
         background-color: #7A6132 !important;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.15) !important;
     }
     .stTextInput>div>div>input {
         background-color: #F8F9FA;
         border: 1px solid #CCCCCC;
+        border-radius: 4px;
     }
     .stTextInput>div>div>input:focus {
         border-color: #002855;
         box-shadow: 0 0 0 0.2rem rgba(0, 40, 85, 0.25);
     }
+    
     .section-title {
         color: #002855; 
         border-left: 5px solid #98793E; 
@@ -135,11 +110,23 @@ st.markdown("""
         margin-top: 20px;
         margin-bottom: 15px;
     }
+    
     .info-text {
         color: #333333;
         font-size: 16px;
         line-height: 1.6;
         text-align: justify;
+    }
+    
+    /* Enlaces decorativos del login */
+    .login-links {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+    .login-links a {
+        color: #0056b3;
+        text-decoration: underline;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -171,10 +158,9 @@ tab_acerca, tab_litoteca, tab_equipo, tab_fundacion = st.tabs([
 ])
 
 # ==========================================
-# PESTAÑA 1: ACERCA DE (CON SUB-MENÚ DORADO)
+# PESTAÑA 1: ACERCA DE (CON SUB-MENÚS LIMPIOS)
 # ==========================================
 with tab_acerca:
-    # Sub-menú estilizado simulando el desglosable
     sub_sociedad, sub_eventos, sub_contacto = st.tabs(["Acerca de la Sociedad", "Actividades y Eventos", "Contáctanos"])
     
     with sub_sociedad:
@@ -246,8 +232,9 @@ with tab_litoteca:
                 st.error("❌ Credenciales incorrectas. Verifique su acceso.")
                 
             st.markdown("""
-                <div style="text-align: center; margin-top: 20px; font-size: 14px;">
-                    <a href="#" style="color: #0056b3;">¿Olvidaste la contraseña?</a>
+                <div class="login-links">
+                    <a href="#">¿Olvidaste el nombre de usuario?</a> | <a href="#">¿Olvidaste la contraseña?</a><br><br>
+                    <a href="#">Crea una cuenta no miembro</a>
                 </div>
             """, unsafe_allow_html=True)
             
@@ -396,7 +383,7 @@ with tab_litoteca:
                         st.dataframe(df, use_container_width=True)
 
 # ==========================================
-# PESTAÑA 3: PARTICIPANTES (CON SUB-MENÚ DORADO)
+# PESTAÑA 3: PARTICIPANTES (CON SUB-MENÚS LIMPIOS)
 # ==========================================
 with tab_equipo:
     sub_junta, sub_proyectos = st.tabs(["Junta Directiva", "Proyectos de Campo"])
