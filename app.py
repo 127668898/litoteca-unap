@@ -173,7 +173,7 @@ with col_texto:
 # ---------------------------------------------------------
 tab_acerca, tab_litoteca, tab_equipo, tab_fundacion = st.tabs([
     "Acerca de", 
-    "Base de Datos (Litoteca)", 
+    "Litoteca", 
     "Participantes", 
     "Fundaciones"
 ])
