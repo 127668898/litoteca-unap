@@ -3,10 +3,10 @@ import pandas as pd
 import plotly.express as px
 import os
 
-# 1. CONFIGURACIÓN DE PÁGINA (Identidad Visual SEG Oficial)
+# 1. CONFIGURACIÓN DE PÁGINA (Portal Institucional SEG Oficial)
 st.set_page_config(
-    page_title="Litoteca SEG UNAP - Privado",
-    page_icon="🔒",
+    page_title="Portal SEG UNAP",
+    page_icon="⚒️",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -23,7 +23,7 @@ st.markdown("""
         background-color: #FFFFFF;
     }
     
-    /* Ajustar espacio superior para evitar el recorte del texto */
+    /* Ajuste de márgenes superiores */
     .block-container {
         padding-top: 3.5rem !important; 
     }
@@ -33,7 +33,7 @@ st.markdown("""
         color: #002855;
         font-size: 30px;
         font-weight: 700;
-        margin-top: 20px; /* Centra el texto con el logo y lo aleja del borde superior */
+        margin-top: 20px; 
         margin-bottom: 0px;
         padding-bottom: 0px;
         line-height: 1.2;
@@ -46,21 +46,45 @@ st.markdown("""
         padding-top: 0px;
     }
     
-    /* Barra de Navegación Estilo SEG */
-    .seg-navbar {
+    /* ---------------------------------------------------
+       MAGIA CSS: Convertir Tabs en la Barra de Navegación SEG 
+       --------------------------------------------------- */
+    div[data-testid="stTabs"] {
+        margin-top: 15px;
+    }
+    .stTabs [data-baseweb="tab-list"] {
         background-color: #002855;
-        color: #FFFFFF;
-        padding: 12px 0px;
-        text-align: center;
+        padding: 0;
+        border-radius: 4px;
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        gap: 0px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        color: #FFFFFF !important;
         font-size: 15px;
         font-weight: 500;
-        letter-spacing: 1px;
-        margin-top: 15px;
-        margin-bottom: 40px;
-        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        padding: 15px 25px;
+        border: none;
     }
-
-    /* Modificación del Botón de Login para que sea idéntico al de la SEG */
+    .stTabs [data-baseweb="tab"]:hover {
+        background-color: #001a38;
+        color: #98793E !important;
+    }
+    /* Pestaña Activa (Estilo botón dorado) */
+    .stTabs [aria-selected="true"] {
+        background-color: #98793E !important;
+        color: #002855 !important;
+        font-weight: bold;
+        border-radius: 4px;
+    }
+    /* Ocultar la línea azul nativa de Streamlit abajo de los tabs */
+    .stTabs [data-baseweb="tab-border"] {
+        display: none !important;
+    }
+    
+    /* ---------------------------------------------------
+       Estilos del Login y Dashboard
+       --------------------------------------------------- */
     div[data-testid="stButton"] button {
         background-color: #98793E !important;
         color: #FFFFFF !important;
@@ -74,8 +98,6 @@ st.markdown("""
         background-color: #7A6132 !important;
         box-shadow: 0px 4px 10px rgba(0,0,0,0.15) !important;
     }
-    
-    /* Estilos de los inputs */
     .stTextInput>div>div>input {
         background-color: #F8F9FA;
         border: 1px solid #CCCCCC;
@@ -85,18 +107,6 @@ st.markdown("""
         border-color: #002855;
         box-shadow: 0 0 0 0.2rem rgba(0, 40, 85, 0.25);
     }
-    
-    /* Títulos de sección internos */
-    .section-title {
-        color: #002855; 
-        border-left: 5px solid #98793E; 
-        padding-left: 10px;
-        font-weight: bold;
-        margin-top: 20px;
-        margin-bottom: 15px;
-    }
-    
-    /* Enlaces decorativos del login */
     .login-links {
         text-align: center;
         margin-top: 20px;
@@ -116,13 +126,35 @@ st.markdown("""
         color: #0056b3;
         text-decoration: none;
     }
+    .section-title {
+        color: #002855; 
+        border-left: 5px solid #98793E; 
+        padding-left: 10px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+    
+    /* Estilo para los textos informativos */
+    .info-text {
+        color: #333333;
+        font-size: 16px;
+        line-height: 1.6;
+        text-align: justify;
+    }
+    .board-list {
+        margin-top: 15px;
+        font-size: 16px;
+    }
+    .board-list li {
+        margin-bottom: 8px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 2. ENCABEZADO Y BARRA DE NAVEGACIÓN (SIEMPRE VISIBLES)
+# 2. ENCABEZADO OFICIAL (SIEMPRE VISIBLE)
 # ---------------------------------------------------------
-# Layout del logo a la izquierda y texto a la derecha
 col_logo, col_texto = st.columns([1, 6])
 with col_logo:
     if os.path.exists("logo.jpg"):
@@ -136,209 +168,270 @@ with col_texto:
         <div class="header-subtitle">Society of Economic Geologists Student Chapter</div>
     """, unsafe_allow_html=True)
 
-# Barra Azul de Navegación
-st.markdown('<div class="seg-navbar">SISTEMA DE CONTROL DE ACCESO • BASE DE DATOS GEOLÓGICA</div>', unsafe_allow_html=True)
-
 # ---------------------------------------------------------
-# 3. SISTEMA DE SEGURIDAD (Login Estilo Oficial)
+# 3. BARRA DE NAVEGACIÓN Y ESTRUCTURA DEL PORTAL
 # ---------------------------------------------------------
-USUARIOS_PERMITIDOS = {
-    "seg_unap": "SegUnap2026",  
-    "mayersyerson17@gmail.com": "927685",        
-    "richardcoaquiraapaza@gmail.com": "925371",       
-    "carbajaljuancarlos194@gmail.com": "927700"    
-}
+tab_acerca, tab_litoteca, tab_equipo, tab_fundacion = st.tabs([
+    "Acerca de", 
+    "Base de Datos (Litoteca)", 
+    "Participantes", 
+    "Fundaciones"
+])
 
-def verificar_credenciales():
-    u_ingresado = st.session_state.get("input_usuario", "").strip()
-    p_ingresada = st.session_state.get("input_password", "").strip()
+# ==========================================
+# PESTAÑA 1: ACERCA DE (PÚBLICO)
+# ==========================================
+with tab_acerca:
+    st.write("")
+    st.markdown('<h3 class="section-title">Capítulo Estudiantil SEG UNAP - Puno</h3>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="info-text">
+        El Capítulo Estudiantil de la <b>Society of Economic Geologists (SEG)</b> de la Universidad Nacional del Altiplano (UNAP) en Puno, es una organización académica sin fines de lucro conformada por estudiantes, egresados y docentes de la Facultad de Ingeniería Geológica y Metalúrgica.<br><br>
+        Nuestro principal objetivo es avanzar en el conocimiento de la geología de yacimientos minerales, sirviendo como un puente directo entre la excelencia académica y la industria minera. Situados estratégicamente en el sur del Perú, una de las regiones metalogenéticas más ricas y diversas de los Andes, enfocamos nuestros esfuerzos en el estudio de sistemas epitermales, pórfidos, skarn y depósitos polimetálicos.<br><br>
+        A través de la organización de conferencias técnicas, talleres prácticos de logueo geológico, mapeo estructural y excursiones a terreno, fomentamos el desarrollo profesional, ético y científico de las futuras generaciones de geólogos económicos del país.
+    </div>
+    """, unsafe_allow_html=True)
+
+# ==========================================
+# PESTAÑA 2: LITOTECA (REQUIERE LOGIN - INTOCABLE)
+# ==========================================
+with tab_litoteca:
+    st.write("")
     
-    if u_ingresado in USUARIOS_PERMITIDOS and USUARIOS_PERMITIDOS[u_ingresado] == p_ingresada:
-        st.session_state["autenticado"] = True
-    else:
-        st.session_state["autenticado"] = False
-        st.session_state["intento_fallido"] = True
+    # Lógica de Seguridad
+    USUARIOS_PERMITIDOS = {
+        "seg_unap": "SegUnap2026",  
+        "mayersyerson17@gmail.com": "927685",        
+        "richardcoaquiraapaza@gmail.com": "925371",       
+        "carbajaljuancarlos194@gmail.com": "927700"    
+    }
 
-if "autenticado" not in st.session_state:
-    st.session_state["autenticado"] = False
-if "intento_fallido" not in st.session_state:
-    st.session_state["intento_fallido"] = False
-
-if not st.session_state["autenticado"]:
-    # Centrar el formulario usando columnas
-    _, col_login, _ = st.columns([1.5, 2, 1.5])
-    
-    with col_login:
-        st.text_input("Username", key="input_usuario", placeholder="Ingrese su correo o usuario")
-        st.text_input("Password", type="password", key="input_password", placeholder="••••••••")
-        st.write("")
+    def verificar_credenciales():
+        u_ingresado = st.session_state.get("input_usuario", "").strip()
+        p_ingresada = st.session_state.get("input_password", "").strip()
         
-        st.button("Sign In", on_click=verificar_credenciales, use_container_width=True)
-        
-        if st.session_state["intento_fallido"]:
-            st.error("❌ Credenciales incorrectas. Intente nuevamente.")
-            
-        st.markdown("""
-            <div class="login-links">
-                <a href="#">Forgot username?</a> | <a href="#">Forgot password?</a><br><br>
-                <a href="#">Create a non-member account</a>
-            </div>
-            <div class="login-footer">
-                By signing in, you agree that you have read and agree to <a href="#">Terms and Conditions</a>, 
-                and <a href="#">Privacy Policy</a>, and <a href="#">Cookie Policy</a>.
-            </div>
-        """, unsafe_allow_html=True)
-    
-    st.stop()
-# ---------------------------------------------------------
-
-
-# =========================================================
-# 4. CONTENIDO PRIVADO (DASHBOARD)
-# =========================================================
-
-ARCHIVO_EXCEL = "datos_muestras.xlsx"
-
-@st.cache_data
-def obtener_nombres_hojas(ruta_excel):
-    if os.path.exists(ruta_excel):
-        return pd.ExcelFile(ruta_excel).sheet_names
-    return []
-
-@st.cache_data
-def cargar_datos_hoja(ruta_excel, nombre_hoja):
-    if os.path.exists(ruta_excel):
-        df = pd.read_excel(ruta_excel, sheet_name=nombre_hoja)
-        df.columns = df.columns.astype(str).str.strip()
-        df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
-        return df
-    return pd.DataFrame()
-
-lista_hojas = obtener_nombres_hojas(ARCHIVO_EXCEL)
-
-if lista_hojas:
-    col_hoja, _ = st.columns([1, 3])
-    with col_hoja:
-        hoja_seleccionada = st.selectbox("📂 SELECCIONAR PESTAÑA / PROYECTO:", lista_hojas)
-
-    df = cargar_datos_hoja(ARCHIVO_EXCEL, hoja_seleccionada)
-
-    if not df.empty:
-        if 'CODIGO DE MUESTRA' in df.columns:
-            df_filtrado = df.copy()
-
-            st.markdown('<h3 class="section-title">🔍 FILTROS DE BÚSQUEDA</h3>', unsafe_allow_html=True)
-            
-            filtros_actuales = []
-            if 'U.M.' in df.columns: filtros_actuales.append('U.M.')
-            if 'Tipo de deposito' in df.columns: filtros_actuales.append('Tipo de deposito')
-            if 'NOMBRE DEL DONADOR' in df.columns: filtros_actuales.append('NOMBRE DEL DONADOR')
-            if 'ESTUDIANTE ENCARGADO' in df.columns: filtros_actuales.append('ESTUDIANTE ENCARGADO')
-            
-            if filtros_actuales:
-                columnas_filtros = st.columns(len(filtros_actuales))
-                for idx, col_name in enumerate(filtros_actuales):
-                    with columnas_filtros[idx]:
-                        if col_name == 'U.M.':
-                            opciones = ["Todas"] + list(df['U.M.'].dropna().unique())
-                            sel_um = st.selectbox("⛏️ U.M. (Unidad Minera):", opciones)
-                            if sel_um != "Todas":
-                                df_filtrado = df_filtrado[df_filtrado['U.M.'] == sel_um]
-                        elif col_name == 'Tipo de deposito':
-                            opciones = ["Todos"] + list(df['Tipo de deposito'].dropna().unique())
-                            sel_dep = st.selectbox("🌋 TIPO DE DEPÓSITO:", opciones)
-                            if sel_dep != "Todos":
-                                df_filtrado = df_filtrado[df_filtrado['Tipo de deposito'] == sel_dep]
-                        elif col_name == 'NOMBRE DEL DONADOR':
-                            opciones = ["Todos"] + list(df['NOMBRE DEL DONADOR'].dropna().unique())
-                            sel_don = st.selectbox("🤝 DONADOR:", opciones)
-                            if sel_don != "Todos":
-                                df_filtrado = df_filtrado[df_filtrado['NOMBRE DEL DONADOR'] == sel_don]
-                        elif col_name == 'ESTUDIANTE ENCARGADO':
-                            opciones = ["Todos"] + list(df['ESTUDIANTE ENCARGADO'].dropna().unique())
-                            sel_est = st.selectbox("🎓 ENCARGADO:", opciones)
-                            if sel_est != "Todos":
-                                df_filtrado = df_filtrado[df_filtrado['ESTUDIANTE ENCARGADO'] == sel_est]
-
-            st.metric("TOTAL REGISTROS FILTRADOS", len(df_filtrado))
-            st.write("---")
-
-            st.markdown('<h3 class="section-title">📊 DIAGRAMAS INTERACTIVOS</h3>', unsafe_allow_html=True)
-            
-            if not df_filtrado.empty:
-                g1, g2 = st.columns(2)
-                
-                with g1:
-                    if 'Tipo de deposito' in df_filtrado.columns and df_filtrado['Tipo de deposito'].dropna().any():
-                        conteo = df_filtrado['Tipo de deposito'].value_counts().reset_index()
-                        conteo.columns = ['Tipo de deposito', 'Cantidad']
-                        fig_torta = px.pie(
-                            conteo, values='Cantidad', names='Tipo de deposito', 
-                            title="Distribución por Tipo de Depósito",
-                            color_discrete_sequence=['#002855', '#98793E', '#4A6B8F', '#F0C96A', '#CCCCCC'],
-                            hole=0.4
-                        )
-                        fig_torta.update_traces(textposition='inside', textinfo='percent+label')
-                        st.plotly_chart(fig_torta, use_container_width=True)
-                        
-                with g2:
-                    if 'EMPRESA' in df_filtrado.columns and df_filtrado['EMPRESA'].dropna().any():
-                        conteo = df_filtrado['EMPRESA'].value_counts().reset_index()
-                        conteo.columns = ['EMPRESA', 'Cantidad']
-                        fig_barras = px.bar(
-                            conteo, x='EMPRESA', y='Cantidad', 
-                            title="Muestras por Empresa",
-                            text_auto=True, color_discrete_sequence=['#002855'] 
-                        )
-                        fig_barras.update_traces(marker_line_color='#98793E', marker_line_width=1, opacity=0.9)
-                        st.plotly_chart(fig_barras, use_container_width=True)
-
-            st.write("---")
-
-            col_tabla, col_foto = st.columns([2, 1])
-            with col_tabla:
-                st.markdown(f'<h4 class="section-title">📋 MATRIZ DE DATOS (Filtrada)</h4>', unsafe_allow_html=True)
-                st.dataframe(df_filtrado, use_container_width=True, hide_index=True)
-                
-            with col_foto:
-                st.markdown('<h4 class="section-title">📸 VISOR DE MUESTRA FÍSICA</h4>', unsafe_allow_html=True)
-                codigos_disponibles = df_filtrado['CODIGO DE MUESTRA'].dropna().unique()
-                if len(codigos_disponibles) > 0:
-                    id_sel = st.selectbox("Seleccionar Código Analizado:", codigos_disponibles)
-                    
-                    fila = df_filtrado[df_filtrado['CODIGO DE MUESTRA'] == id_sel].iloc[0]
-                    um_text = fila['U.M.'] if 'U.M.' in df_filtrado.columns else "N/A"
-                    desc_text = fila['Descripcion'] if 'Descripcion' in df_filtrado.columns else "N/A"
-                    
-                    st.info(f"📍 **U.M.:** {um_text} \n\n 🔬 **Descripción:** {desc_text}")
-                    
-                    ruta_jpg = f"fotos/{id_sel}.jpg"
-                    ruta_png = f"fotos/{id_sel}.png"
-                    
-                    if os.path.exists(ruta_jpg):
-                        st.image(ruta_jpg, caption=f"Muestra: {id_sel}", use_container_width=True)
-                    elif os.path.exists(ruta_png):
-                        st.image(ruta_png, caption=f"Muestra: {id_sel}", use_container_width=True)
+        if u_ingresado in USUARIOS_PERMITIDOS and USUARIOS_PERMITIDOS[u_ingresado] == p_ingresada:
+            st.session_state["autenticado"] = True
         else:
-            # =========================================================
-            # VISTA PARA FORMATOS DE LOGUEO (CASAPALCA, SINA, ETC)
-            # =========================================================
-            st.markdown(f'<h4 class="section-title">📄 REPORTE DE LOGUEO: {hoja_seleccionada.upper()}</h4>', unsafe_allow_html=True)
+            st.session_state["autenticado"] = False
+            st.session_state["intento_fallido"] = True
+
+    if "autenticado" not in st.session_state:
+        st.session_state["autenticado"] = False
+    if "intento_fallido" not in st.session_state:
+        st.session_state["intento_fallido"] = False
+
+    # MURO DE LOGIN (Recreación exacta del sitio SEG)
+    if not st.session_state["autenticado"]:
+        st.write("")
+        st.write("")
+        _, col_login, _ = st.columns([2, 2.5, 2])
+        
+        with col_login:
+            st.text_input("Nombre de usuario", key="input_usuario", placeholder="Ingrese su correo o usuario")
+            st.text_input("Contraseña", type="password", key="input_password", placeholder="••••••••")
+            st.write("")
             
-            tab_tarjetas, tab_tabla = st.tabs(["🗂️ Vista Dinámica (Tarjetas)", "📊 Vista Original (Excel)"])
+            st.button("Iniciar sesión", on_click=verificar_credenciales, use_container_width=True)
             
-            with tab_tarjetas:
-                st.info("💡 Exploración interactiva. Formato estructurado para descripciones geológicas de campo.")
+            if st.session_state["intento_fallido"]:
+                st.error("❌ Credenciales incorrectas. Verifique su acceso.")
                 
-                for index, row in df.iterrows():
-                    celdas_validas = [str(val) for val in row if pd.notna(val) and str(val).strip() != ""]
+            st.markdown("""
+                <div class="login-links">
+                    <a href="#">¿Olvidaste el nombre de usuario?</a> | <a href="#">¿Olvidaste la contraseña?</a><br><br>
+                    <a href="#">Crea una cuenta no miembro</a>
+                </div>
+                <div class="login-footer">
+                    Al iniciar sesión, aceptas haber leído y aceptado los <a href="#">Términos y Condiciones</a>, 
+                    la <a href="#">Política de Privacidad</a> y la <a href="#">Política de Galletas</a>.
+                </div>
+            """, unsafe_allow_html=True)
+            
+    # DASHBOARD PRIVADO (Gráficos, Filtros, Tablas y Tarjetas Dinámicas)
+    else:
+        st.success("✅ Autenticación exitosa. Bienvenido a la Base de Datos de la Litoteca.")
+        
+        ARCHIVO_EXCEL = "datos_muestras.xlsx"
+
+        @st.cache_data
+        def obtener_nombres_hojas(ruta_excel):
+            if os.path.exists(ruta_excel):
+                return pd.ExcelFile(ruta_excel).sheet_names
+            return []
+
+        @st.cache_data
+        def cargar_datos_hoja(ruta_excel, nombre_hoja):
+            if os.path.exists(ruta_excel):
+                df = pd.read_excel(ruta_excel, sheet_name=nombre_hoja)
+                df.columns = df.columns.astype(str).str.strip()
+                df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+                return df
+            return pd.DataFrame()
+
+        lista_hojas = obtener_nombres_hojas(ARCHIVO_EXCEL)
+
+        if lista_hojas:
+            col_hoja, _ = st.columns([1, 3])
+            with col_hoja:
+                hoja_seleccionada = st.selectbox("📂 SELECCIONAR PESTAÑA / PROYECTO:", lista_hojas)
+
+            df = cargar_datos_hoja(ARCHIVO_EXCEL, hoja_seleccionada)
+
+            if not df.empty:
+                if 'CODIGO DE MUESTRA' in df.columns:
+                    df_filtrado = df.copy()
+
+                    st.markdown('<h3 class="section-title">🔍 FILTROS DE BÚSQUEDA</h3>', unsafe_allow_html=True)
                     
-                    if celdas_validas:
-                        with st.expander(f"🔹 Bloque de Registro Técnico (Fila {index + 1})", expanded=(index < 7)):
-                            cols = st.columns(len(celdas_validas))
-                            for i, texto in enumerate(celdas_validas):
-                                with cols[i]:
-                                    st.markdown(f"<div style='background-color:#ffffff; color:#111111; padding:15px; border-left: 4px solid #002855; border-radius:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 13px; font-family: monospace; white-space: pre-wrap;'>{texto}</div>", unsafe_allow_html=True)
-                                    
-            with tab_tabla:
-                st.dataframe(df, use_container_width=True)
+                    filtros_actuales = []
+                    if 'U.M.' in df.columns: filtros_actuales.append('U.M.')
+                    if 'Tipo de deposito' in df.columns: filtros_actuales.append('Tipo de deposito')
+                    if 'NOMBRE DEL DONADOR' in df.columns: filtros_actuales.append('NOMBRE DEL DONADOR')
+                    if 'ESTUDIANTE ENCARGADO' in df.columns: filtros_actuales.append('ESTUDIANTE ENCARGADO')
+                    
+                    if filtros_actuales:
+                        columnas_filtros = st.columns(len(filtros_actuales))
+                        for idx, col_name in enumerate(filtros_actuales):
+                            with columnas_filtros[idx]:
+                                if col_name == 'U.M.':
+                                    opciones = ["Todas"] + list(df['U.M.'].dropna().unique())
+                                    sel_um = st.selectbox("⛏️ U.M. (Unidad Minera):", opciones)
+                                    if sel_um != "Todas":
+                                        df_filtrado = df_filtrado[df_filtrado['U.M.'] == sel_um]
+                                elif col_name == 'Tipo de deposito':
+                                    opciones = ["Todos"] + list(df['Tipo de deposito'].dropna().unique())
+                                    sel_dep = st.selectbox("🌋 TIPO DE DEPÓSITO:", opciones)
+                                    if sel_dep != "Todos":
+                                        df_filtrado = df_filtrado[df_filtrado['Tipo de deposito'] == sel_dep]
+                                elif col_name == 'NOMBRE DEL DONADOR':
+                                    opciones = ["Todos"] + list(df['NOMBRE DEL DONADOR'].dropna().unique())
+                                    sel_don = st.selectbox("🤝 DONADOR:", opciones)
+                                    if sel_don != "Todos":
+                                        df_filtrado = df_filtrado[df_filtrado['NOMBRE DEL DONADOR'] == sel_don]
+                                elif col_name == 'ESTUDIANTE ENCARGADO':
+                                    opciones = ["Todos"] + list(df['ESTUDIANTE ENCARGADO'].dropna().unique())
+                                    sel_est = st.selectbox("🎓 ENCARGADO:", opciones)
+                                    if sel_est != "Todos":
+                                        df_filtrado = df_filtrado[df_filtrado['ESTUDIANTE ENCARGADO'] == sel_est]
+
+                    st.metric("TOTAL REGISTROS FILTRADOS", len(df_filtrado))
+                    st.write("---")
+
+                    st.markdown('<h3 class="section-title">📊 DIAGRAMAS INTERACTIVOS</h3>', unsafe_allow_html=True)
+                    
+                    if not df_filtrado.empty:
+                        g1, g2 = st.columns(2)
+                        
+                        with g1:
+                            if 'Tipo de deposito' in df_filtrado.columns and df_filtrado['Tipo de deposito'].dropna().any():
+                                conteo = df_filtrado['Tipo de deposito'].value_counts().reset_index()
+                                conteo.columns = ['Tipo de deposito', 'Cantidad']
+                                fig_torta = px.pie(
+                                    conteo, values='Cantidad', names='Tipo de deposito', 
+                                    title="Distribución por Tipo de Depósito",
+                                    color_discrete_sequence=['#002855', '#98793E', '#4A6B8F', '#F0C96A', '#CCCCCC'],
+                                    hole=0.4
+                                )
+                                fig_torta.update_traces(textposition='inside', textinfo='percent+label')
+                                st.plotly_chart(fig_torta, use_container_width=True)
+                                
+                        with g2:
+                            if 'EMPRESA' in df_filtrado.columns and df_filtrado['EMPRESA'].dropna().any():
+                                conteo = df_filtrado['EMPRESA'].value_counts().reset_index()
+                                conteo.columns = ['EMPRESA', 'Cantidad']
+                                fig_barras = px.bar(
+                                    conteo, x='EMPRESA', y='Cantidad', 
+                                    title="Muestras por Empresa",
+                                    text_auto=True, color_discrete_sequence=['#002855'] 
+                                )
+                                fig_barras.update_traces(marker_line_color='#98793E', marker_line_width=1, opacity=0.9)
+                                st.plotly_chart(fig_barras, use_container_width=True)
+
+                    st.write("---")
+
+                    col_tabla, col_foto = st.columns([2, 1])
+                    with col_tabla:
+                        st.markdown(f'<h4 class="section-title">📋 MATRIZ DE DATOS (Filtrada)</h4>', unsafe_allow_html=True)
+                        st.dataframe(df_filtrado, use_container_width=True, hide_index=True)
+                        
+                    with col_foto:
+                        st.markdown('<h4 class="section-title">📸 VISOR DE MUESTRA FÍSICA</h4>', unsafe_allow_html=True)
+                        codigos_disponibles = df_filtrado['CODIGO DE MUESTRA'].dropna().unique()
+                        if len(codigos_disponibles) > 0:
+                            id_sel = st.selectbox("Seleccionar Código Analizado:", codigos_disponibles)
+                            
+                            fila = df_filtrado[df_filtrado['CODIGO DE MUESTRA'] == id_sel].iloc[0]
+                            um_text = fila['U.M.'] if 'U.M.' in df_filtrado.columns else "N/A"
+                            desc_text = fila['Descripcion'] if 'Descripcion' in df_filtrado.columns else "N/A"
+                            
+                            st.info(f"📍 **U.M.:** {um_text} \n\n 🔬 **Descripción:** {desc_text}")
+                            
+                            ruta_jpg = f"fotos/{id_sel}.jpg"
+                            ruta_png = f"fotos/{id_sel}.png"
+                            
+                            if os.path.exists(ruta_jpg):
+                                st.image(ruta_jpg, caption=f"Muestra: {id_sel}", use_container_width=True)
+                            elif os.path.exists(ruta_png):
+                                st.image(ruta_png, caption=f"Muestra: {id_sel}", use_container_width=True)
+                else:
+                    st.markdown(f'<h4 class="section-title">📄 REPORTE DE LOGUEO: {hoja_seleccionada.upper()}</h4>', unsafe_allow_html=True)
+                    
+                    tab_tarjetas, tab_tabla = st.tabs(["🗂️ Vista Dinámica (Tarjetas)", "📊 Vista Original (Excel)"])
+                    
+                    with tab_tarjetas:
+                        st.info("💡 Exploración interactiva. Formato estructurado para descripciones geológicas de campo.")
+                        
+                        for index, row in df.iterrows():
+                            celdas_validas = [str(val) for val in row if pd.notna(val) and str(val).strip() != ""]
+                            
+                            if celdas_validas:
+                                with st.expander(f"🔹 Bloque de Registro Técnico (Fila {index + 1})", expanded=(index < 7)):
+                                    cols = st.columns(len(celdas_validas))
+                                    for i, texto in enumerate(celdas_validas):
+                                        with cols[i]:
+                                            st.markdown(f"<div style='background-color:#ffffff; color:#111111; padding:15px; border-left: 4px solid #002855; border-radius:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 13px; font-family: monospace; white-space: pre-wrap;'>{texto}</div>", unsafe_allow_html=True)
+                                            
+                    with tab_tabla:
+                        st.dataframe(df, use_container_width=True)
+
+# ==========================================
+# PESTAÑA 3: EQUIPO Y PARTICIPANTES (JUNTA DIRECTIVA)
+# ==========================================
+with tab_equipo:
+    st.write("")
+    st.markdown('<h3 class="section-title">Junta Directiva SEG UNAP</h3>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="info-text">
+        El Capítulo Estudiantil SEG UNAP está liderado por un equipo de estudiantes comprometidos con la difusión del conocimiento en geología económica. Nuestra directiva se encarga de planificar, organizar y ejecutar todas las actividades académicas, de campo y la gestión técnica de nuestra Litoteca.<br><br>
+        <b>Miembros de la Directiva:</b>
+        <ul class="board-list">
+            <li><b>Presidente(a):</b> [Nombre del Presidente]</li>
+            <li><b>Vicepresidente(a):</b> [Nombre del Vicepresidente]</li>
+            <li><b>Secretario(a):</b> [Nombre del Secretario]</li>
+            <li><b>Tesorero(a):</b> [Nombre del Tesorero]</li>
+            <li><b>Vocal de Litoteca:</b> Gary Bustinza</li>
+            <li><b>Vocal [Otro cargo]:</b> [Nombre]</li>
+        </ul>
+        <i>* En construcción: Puedes editar directamente el código para actualizar la lista completa de la junta.</i>
+    </div>
+    """, unsafe_allow_html=True)
+
+# ==========================================
+# PESTAÑA 4: FUNDACIONES (PÚBLICO)
+# ==========================================
+with tab_fundacion:
+    st.write("")
+    st.markdown('<h3 class="section-title">Respaldo de la SEG Foundation</h3>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="info-text">
+        El Capítulo Estudiantil de la UNAP cuenta con el prestigioso aval y apoyo de la <b>Society of Economic Geologists Foundation (SEGF)</b>. La Fundación es el pilar que sostiene el desarrollo de estudiantes de geología a nivel mundial, proporcionando recursos invaluables para la educación e investigación.<br><br>
+        A través de la membresía SEG y la afiliación a nuestro capítulo, los estudiantes tienen la oportunidad de postular a múltiples beneficios globales:
+        <ul>
+            <li><b>Subvenciones de Investigación Estudiantil (Student Research Grants):</b> Fondos económicos sustanciales (como el <i>Hugh E. McKinstry Fund</i>) para financiar trabajos de tesis, análisis de laboratorio y mapeo de campo en yacimientos minerales.</li>
+            <li><b>Apoyo para Viajes y Campo:</b> Becas (como el <i>Stewart R. Wallace Fund</i>) diseñadas para ayudar a los capítulos a organizar excursiones a yacimientos de clase mundial y asistir a conferencias internacionales de la SEG.</li>
+            <li><b>Red Global de Mentores:</b> Acceso directo a profesionales líderes de la industria minera, investigadores de renombre y oportunidades de <i>networking</i> exclusivas.</li>
+        </ul>
+        Agradecemos profundamente a la SEG Foundation por su compromiso histórico con la formación de la próxima generación de líderes en geología económica.
+    </div>
+    """, unsafe_allow_html=True)
