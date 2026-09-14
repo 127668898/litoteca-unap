@@ -11,147 +11,135 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. MOTOR CSS AVANZADO (Minimalismo y Animaciones)
+# Paleta de Colores Oficial SEG
+# Azul Marino SEG: #002855
+# Dorado/Bronce SEG: #98793E
+# Fondo: #FFFFFF (Blanco Puro)
+
 st.markdown("""
     <style>
-    /* Fondo General Blanco Puro y fuente limpia */
+    /* Fondo General Blanco Puro */
     .stApp {
-        background-color: #FAFAFA;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #FFFFFF;
     }
     
-    /* Animación de entrada suave (Fade In Up) */
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(15px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    
-    /* Aplicar animación a los contenedores principales */
     .block-container {
-        padding-top: 2.5rem !important;
-        animation: fadeInUp 0.8s ease-out;
+        padding-top: 3.5rem !important; 
     }
     
-    /* ---------------------------------------------------
-       ENCABEZADO MINIMALISTA
-       --------------------------------------------------- */
     .header-title {
         color: #002855;
-        font-size: 28px;
-        font-weight: 800;
-        letter-spacing: -0.5px;
-        margin-top: 25px; 
+        font-size: 30px;
+        font-weight: 700;
+        margin-top: 20px; 
         margin-bottom: 0px;
         padding-bottom: 0px;
-        line-height: 1.1;
+        line-height: 1.2;
     }
     .header-subtitle {
         color: #98793E;
-        font-size: 15px;
-        font-weight: 500;
-        margin-top: 5px;
+        font-size: 16px;
+        font-style: italic;
+        margin-top: 0px;
+        padding-top: 0px;
     }
     
     /* ---------------------------------------------------
-       PESTAÑAS (TABS) ELEGANTES Y ANIMADAS
+       BARRA DE NAVEGACIÓN PRINCIPAL Y SUB-MENÚS (DISEÑO ORIGINAL LIMPIO)
        --------------------------------------------------- */
     div[data-testid="stTabs"] {
-        margin-top: 20px;
+        margin-top: 15px;
     }
     .stTabs [data-baseweb="tab-list"] {
-        background-color: transparent;
-        border-bottom: 1px solid #E0E0E0;
-        gap: 20px;
+        background-color: #002855;
+        padding: 0;
+        border-radius: 4px;
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        gap: 0px;
     }
     .stTabs [data-baseweb="tab"] {
-        color: #666666 !important;
-        font-size: 16px;
+        color: #FFFFFF !important;
+        font-size: 15px;
         font-weight: 500;
-        padding: 10px 5px;
+        padding: 15px 25px;
         border: none;
-        background-color: transparent !important;
-        transition: all 0.3s ease;
     }
     .stTabs [data-baseweb="tab"]:hover {
-        color: #002855 !important;
-        transform: translateY(-2px);
+        background-color: #001a38;
+        color: #98793E !important;
     }
     .stTabs [aria-selected="true"] {
+        background-color: #98793E !important;
         color: #002855 !important;
-        font-weight: 700;
-        border-bottom: 3px solid #98793E !important;
+        font-weight: bold;
+        border-radius: 4px;
     }
     .stTabs [data-baseweb="tab-border"] {
         display: none !important;
     }
-
-    /* ---------------------------------------------------
-       CAJAS, BOTONES E INPUTS (Efecto Levitación/Hover)
-       --------------------------------------------------- */
-    /* Inputs */
-    .stTextInput>div>div>input {
-        background-color: #FFFFFF;
-        border: 1px solid #E0E0E0;
-        border-radius: 8px;
-        padding: 12px;
-        transition: all 0.3s ease;
-    }
-    .stTextInput>div>div>input:focus {
-        border-color: #98793E;
-        box-shadow: 0px 4px 12px rgba(152, 121, 62, 0.15);
-        transform: translateY(-1px);
-    }
     
-    /* Botones */
+    /* Estilos Generales de Botones e Inputs */
     div[data-testid="stButton"] button {
         background-color: #98793E !important;
         color: #FFFFFF !important;
         border: none !important;
-        padding: 8px 24px !important;
-        font-weight: 600 !important;
-        border-radius: 8px !important;
-        transition: all 0.3s ease !important;
-        letter-spacing: 0.5px;
+        padding: 10px 20px !important;
+        font-weight: 500 !important;
+        border-radius: 4px !important;
+        transition: 0.3s;
     }
     div[data-testid="stButton"] button:hover {
-        background-color: #002855 !important;
-        box-shadow: 0px 6px 15px rgba(0, 40, 85, 0.2) !important;
-        transform: translateY(-2px) !important;
+        background-color: #7A6132 !important;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.15) !important;
+    }
+    .stTextInput>div>div>input {
+        background-color: #F8F9FA;
+        border: 1px solid #CCCCCC;
+        border-radius: 4px;
+    }
+    .stTextInput>div>div>input:focus {
+        border-color: #002855;
+        box-shadow: 0 0 0 0.2rem rgba(0, 40, 85, 0.25);
     }
     
-    /* Títulos de sección */
     .section-title {
         color: #002855; 
-        font-size: 20px;
-        font-weight: 700;
-        margin-top: 30px;
-        margin-bottom: 20px;
-        display: inline-block;
-        border-bottom: 2px solid #98793E;
-        padding-bottom: 5px;
+        border-left: 5px solid #98793E; 
+        padding-left: 10px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 15px;
     }
     
-    /* Sombra suave para imágenes de muestra */
-    img {
-        border-radius: 8px;
-        box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
-        transition: transform 0.3s ease;
+    .info-text {
+        color: #333333;
+        font-size: 16px;
+        line-height: 1.6;
+        text-align: justify;
     }
-    img:hover {
-        transform: scale(1.02);
+    
+    /* Enlaces decorativos del login */
+    .login-links {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+    .login-links a {
+        color: #0056b3;
+        text-decoration: underline;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 3. ENCABEZADO MINIMALISTA
+# 2. ENCABEZADO OFICIAL (SIEMPRE VISIBLE)
 # ---------------------------------------------------------
-col_logo, col_texto = st.columns([1, 8])
+col_logo, col_texto = st.columns([1, 6])
 with col_logo:
-    if os.path.exists("logo.png"):
-        st.image("logo.png", width=90)
-    elif os.path.exists("logo.jpg"):
-        st.image("logo.jpg", width=90)
+    if os.path.exists("logo.jpg"):
+        st.image("logo.jpg", width=120)
+    elif os.path.exists("logo.png"):
+        st.image("logo.png", width=120)
 
 with col_texto:
     st.markdown("""
@@ -160,7 +148,7 @@ with col_texto:
     """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 4. ESTRUCTURA DE NAVEGACIÓN
+# 3. BARRA DE NAVEGACIÓN Y ESTRUCTURA DEL PORTAL
 # ---------------------------------------------------------
 tab_acerca, tab_litoteca, tab_equipo, tab_fundacion = st.tabs([
     "Acerca de", 
@@ -170,20 +158,43 @@ tab_acerca, tab_litoteca, tab_equipo, tab_fundacion = st.tabs([
 ])
 
 # ==========================================
-# PESTAÑA 1: ACERCA DE
+# PESTAÑA 1: ACERCA DE (CON SUB-MENÚS LIMPIOS)
 # ==========================================
 with tab_acerca:
-    st.markdown('<div class="section-title">Capítulo Estudiantil SEG UNAP</div>', unsafe_allow_html=True)
-    st.write("""
-    El Capítulo Estudiantil de la **Society of Economic Geologists (SEG)** de la Universidad Nacional del Altiplano en Puno, es una organización académica sin fines de lucro conformada por estudiantes y docentes de la Facultad de Ingeniería Geológica y Metalúrgica.
+    sub_sociedad, sub_eventos, sub_contacto = st.tabs(["Acerca de la Sociedad", "Actividades y Eventos", "Contáctanos"])
     
-    Nuestro principal objetivo es avanzar en el conocimiento de la geología de yacimientos minerales. Situados estratégicamente en el sur del Perú, enfocamos nuestros esfuerzos en el estudio de sistemas epitermales, pórfidos, skarn y depósitos polimetálicos.
-    """)
+    with sub_sociedad:
+        st.write("")
+        st.markdown('<h3 class="section-title">Capítulo Estudiantil SEG UNAP - Puno</h3>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="info-text">
+            El Capítulo Estudiantil de la <b>Society of Economic Geologists (SEG)</b> de la Universidad Nacional del Altiplano (UNAP) en Puno, es una organización académica sin fines de lucro conformada por estudiantes, egresados y docentes de la Facultad de Ingeniería Geológica y Metalúrgica.<br><br>
+            Nuestro principal objetivo es avanzar en el conocimiento de la geología de yacimientos minerales, sirviendo como un puente directo entre la excelencia académica y la industria minera. Situados estratégicamente en el sur del Perú, una de las regiones metalogenéticas más ricas y diversas de los Andes, enfocamos nuestros esfuerzos en el estudio de sistemas epitermales, pórfidos, skarn y depósitos polimetálicos.
+        </div>
+        """, unsafe_allow_html=True)
+
+    with sub_eventos:
+        st.write("")
+        st.markdown('<h3 class="section-title">Calendario Académico y Eventos</h3>', unsafe_allow_html=True)
+        st.info("📌 Próximamente: Aquí anunciaremos nuestros webinars técnicos, talleres de logueo, salidas de campo y certificaciones del capítulo.")
+        
+    with sub_contacto:
+        st.write("")
+        st.markdown('<h3 class="section-title">Únete al Capítulo</h3>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="info-text">
+            ¿Interesado en la geología económica? Síguenos en nuestras redes oficiales y entérate de las convocatorias para formar parte de la directiva o asistir a nuestros próximos eventos de terreno.<br><br>
+            📧 <b>Correo Institucional:</b> [Añadir correo SEG UNAP]<br>
+            📱 <b>Facebook/LinkedIn:</b> [Añadir links]
+        </div>
+        """, unsafe_allow_html=True)
 
 # ==========================================
 # PESTAÑA 2: LITOTECA (PROTEGIDA CON LOGIN)
 # ==========================================
 with tab_litoteca:
+    st.write("")
+    
     USUARIOS_PERMITIDOS = {
         "seg_unap": "SegUnap2026",  
         "mayersyerson17@gmail.com": "927685",        
@@ -208,22 +219,27 @@ with tab_litoteca:
 
     if not st.session_state["autenticado"]:
         st.write("")
-        st.write("")
-        _, col_login, _ = st.columns([1, 1.5, 1])
+        _, col_login, _ = st.columns([2, 2.5, 2])
         
         with col_login:
-            st.markdown("<h4 style='text-align:center; color:#002855; font-weight:700;'>Control de Acceso</h4>", unsafe_allow_html=True)
-            st.write("")
-            st.text_input("Usuario", key="input_usuario", placeholder="Ingrese su correo institucional")
+            st.text_input("Nombre de usuario", key="input_usuario", placeholder="Ingrese su correo o usuario")
             st.text_input("Contraseña", type="password", key="input_password", placeholder="••••••••")
             st.write("")
-            st.button("Iniciar Sesión", on_click=verificar_credenciales, use_container_width=True)
+            
+            st.button("Iniciar sesión", on_click=verificar_credenciales, use_container_width=True)
             
             if st.session_state["intento_fallido"]:
-                st.error("Credenciales incorrectas. Verifique su acceso.")
+                st.error("❌ Credenciales incorrectas. Verifique su acceso.")
+                
+            st.markdown("""
+                <div class="login-links">
+                    <a href="#">¿Olvidaste el nombre de usuario?</a> | <a href="#">¿Olvidaste la contraseña?</a><br><br>
+                    <a href="#">Crea una cuenta no miembro</a>
+                </div>
+            """, unsafe_allow_html=True)
+            
     else:
-        st.success("Autenticación exitosa.")
-        st.write("---")
+        st.success("✅ Autenticación exitosa. Bienvenido a la Base de Datos de la Litoteca.")
         
         ARCHIVO_EXCEL = "datos_muestras.xlsx"
 
@@ -245,9 +261,9 @@ with tab_litoteca:
         lista_hojas = obtener_nombres_hojas(ARCHIVO_EXCEL)
 
         if lista_hojas:
-            col_hoja, _ = st.columns([1.5, 2.5])
+            col_hoja, _ = st.columns([1, 3])
             with col_hoja:
-                hoja_seleccionada = st.selectbox("📁 Proyecto Geológico:", lista_hojas, label_visibility="collapsed")
+                hoja_seleccionada = st.selectbox("📂 SELECCIONAR PESTAÑA / PROYECTO:", lista_hojas)
 
             df = cargar_datos_hoja(ARCHIVO_EXCEL, hoja_seleccionada)
 
@@ -255,7 +271,7 @@ with tab_litoteca:
                 if 'CODIGO DE MUESTRA' in df.columns:
                     df_filtrado = df.copy()
 
-                    st.markdown('<div class="section-title">Filtros Activos</div>', unsafe_allow_html=True)
+                    st.markdown('<h3 class="section-title">🔍 FILTROS DE BÚSQUEDA</h3>', unsafe_allow_html=True)
                     
                     filtros_actuales = []
                     if 'U.M.' in df.columns: filtros_actuales.append('U.M.')
@@ -269,128 +285,143 @@ with tab_litoteca:
                             with columnas_filtros[idx]:
                                 if col_name == 'U.M.':
                                     opciones = ["Todas"] + list(df['U.M.'].dropna().unique())
-                                    sel_um = st.selectbox("Unidad Minera", opciones)
+                                    sel_um = st.selectbox("⛏️ U.M. (Unidad Minera):", opciones)
                                     if sel_um != "Todas":
                                         df_filtrado = df_filtrado[df_filtrado['U.M.'] == sel_um]
                                 elif col_name == 'Tipo de deposito':
                                     opciones = ["Todos"] + list(df['Tipo de deposito'].dropna().unique())
-                                    sel_dep = st.selectbox("Tipo de Depósito", opciones)
+                                    sel_dep = st.selectbox("🌋 TIPO DE DEPÓSITO:", opciones)
                                     if sel_dep != "Todos":
                                         df_filtrado = df_filtrado[df_filtrado['Tipo de deposito'] == sel_dep]
                                 elif col_name == 'NOMBRE DEL DONADOR':
                                     opciones = ["Todos"] + list(df['NOMBRE DEL DONADOR'].dropna().unique())
-                                    sel_don = st.selectbox("Donador", opciones)
+                                    sel_don = st.selectbox("🤝 DONADOR:", opciones)
                                     if sel_don != "Todos":
                                         df_filtrado = df_filtrado[df_filtrado['NOMBRE DEL DONADOR'] == sel_don]
                                 elif col_name == 'ESTUDIANTE ENCARGADO':
                                     opciones = ["Todos"] + list(df['ESTUDIANTE ENCARGADO'].dropna().unique())
-                                    sel_est = st.selectbox("Encargado", opciones)
+                                    sel_est = st.selectbox("🎓 ENCARGADO:", opciones)
                                     if sel_est != "Todos":
                                         df_filtrado = df_filtrado[df_filtrado['ESTUDIANTE ENCARGADO'] == sel_est]
 
+                    st.metric("TOTAL REGISTROS FILTRADOS", len(df_filtrado))
                     st.write("---")
+
+                    st.markdown('<h3 class="section-title">📊 DIAGRAMAS INTERACTIVOS</h3>', unsafe_allow_html=True)
                     
-                    # Gráficos de Plotly con diseño minimalista (Fondo transparente)
-                    st.markdown('<div class="section-title">Análisis de Datos</div>', unsafe_allow_html=True)
                     if not df_filtrado.empty:
                         g1, g2 = st.columns(2)
                         
                         with g1:
                             if 'Tipo de deposito' in df_filtrado.columns and df_filtrado['Tipo de deposito'].dropna().any():
                                 conteo = df_filtrado['Tipo de deposito'].value_counts().reset_index()
-                                conteo.columns = ['Tipo', 'Total']
+                                conteo.columns = ['Tipo de deposito', 'Cantidad']
                                 fig_torta = px.pie(
-                                    conteo, values='Total', names='Tipo', 
-                                    hole=0.5,
-                                    color_discrete_sequence=['#002855', '#98793E', '#4A6B8F', '#F0C96A', '#CCCCCC']
+                                    conteo, values='Cantidad', names='Tipo de deposito', 
+                                    title="Distribución por Tipo de Depósito",
+                                    color_discrete_sequence=['#002855', '#98793E', '#4A6B8F', '#F0C96A', '#CCCCCC'],
+                                    hole=0.4
                                 )
-                                fig_torta.update_layout(
-                                    plot_bgcolor='rgba(0,0,0,0)', 
-                                    paper_bgcolor='rgba(0,0,0,0)',
-                                    margin=dict(t=30, b=10, l=10, r=10),
-                                    title=dict(text="Distribución de Depósitos", font=dict(size=14, color='#002855'))
-                                )
+                                fig_torta.update_traces(textposition='inside', textinfo='percent+label')
                                 st.plotly_chart(fig_torta, use_container_width=True)
                                 
                         with g2:
                             if 'EMPRESA' in df_filtrado.columns and df_filtrado['EMPRESA'].dropna().any():
                                 conteo = df_filtrado['EMPRESA'].value_counts().reset_index()
-                                conteo.columns = ['Empresa', 'Total']
+                                conteo.columns = ['EMPRESA', 'Cantidad']
                                 fig_barras = px.bar(
-                                    conteo, x='Empresa', y='Total', 
+                                    conteo, x='EMPRESA', y='Cantidad', 
+                                    title="Muestras por Empresa",
                                     text_auto=True, color_discrete_sequence=['#002855'] 
                                 )
-                                fig_barras.update_layout(
-                                    plot_bgcolor='rgba(0,0,0,0)', 
-                                    paper_bgcolor='rgba(0,0,0,0)',
-                                    margin=dict(t=30, b=10, l=10, r=10),
-                                    title=dict(text="Muestras por Empresa", font=dict(size=14, color='#002855')),
-                                    xaxis=dict(showgrid=False),
-                                    yaxis=dict(showgrid=True, gridcolor='#E0E0E0')
-                                )
+                                fig_barras.update_traces(marker_line_color='#98793E', marker_line_width=1, opacity=0.9)
                                 st.plotly_chart(fig_barras, use_container_width=True)
 
                     st.write("---")
 
-                    col_tabla, col_foto = st.columns([2, 1.2])
+                    col_tabla, col_foto = st.columns([2, 1])
                     with col_tabla:
-                        st.markdown('<div class="section-title">Matriz de Inventario</div>', unsafe_allow_html=True)
+                        st.markdown(f'<h4 class="section-title">📋 MATRIZ DE DATOS</h4>', unsafe_allow_html=True)
                         st.dataframe(df_filtrado, use_container_width=True, hide_index=True)
                         
                     with col_foto:
-                        st.markdown('<div class="section-title">Visor Digital</div>', unsafe_allow_html=True)
+                        st.markdown('<h4 class="section-title">📸 VISOR DE MUESTRA FÍSICA</h4>', unsafe_allow_html=True)
                         codigos_disponibles = df_filtrado['CODIGO DE MUESTRA'].dropna().unique()
                         if len(codigos_disponibles) > 0:
-                            id_sel = st.selectbox("Seleccionar Muestra:", codigos_disponibles, label_visibility="collapsed")
+                            id_sel = st.selectbox("Seleccionar Código Analizado:", codigos_disponibles)
                             
                             fila = df_filtrado[df_filtrado['CODIGO DE MUESTRA'] == id_sel].iloc[0]
                             um_text = fila['U.M.'] if 'U.M.' in df_filtrado.columns else "N/A"
                             desc_text = fila['Descripcion'] if 'Descripcion' in df_filtrado.columns else "N/A"
                             
-                            st.markdown(f"**U.M.:** {um_text}  \n**Detalle:** {desc_text}")
+                            st.info(f"📍 **U.M.:** {um_text} \n\n 🔬 **Descripción:** {desc_text}")
                             
                             ruta_jpg = f"fotos/{id_sel}.jpg"
                             ruta_png = f"fotos/{id_sel}.png"
                             
                             if os.path.exists(ruta_jpg):
-                                st.image(ruta_jpg, use_container_width=True)
+                                st.image(ruta_jpg, caption=f"Muestra: {id_sel}", use_container_width=True)
                             elif os.path.exists(ruta_png):
-                                st.image(ruta_png, use_container_width=True)
+                                st.image(ruta_png, caption=f"Muestra: {id_sel}", use_container_width=True)
                 else:
-                    st.markdown(f'<div class="section-title">Reporte Estructural: {hoja_seleccionada.upper()}</div>', unsafe_allow_html=True)
+                    st.markdown(f'<h4 class="section-title">📄 REPORTE DE LOGUEO: {hoja_seleccionada.upper()}</h4>', unsafe_allow_html=True)
                     
-                    for index, row in df.iterrows():
-                        celdas_validas = [str(val) for val in row if pd.notna(val) and str(val).strip() != ""]
-                        if celdas_validas:
-                            with st.expander(f"Registro Técnico (Fila {index + 1})", expanded=(index < 5)):
-                                cols = st.columns(len(celdas_validas))
-                                for i, texto in enumerate(celdas_validas):
-                                    with cols[i]:
-                                        st.markdown(f"<div style='background-color:#F5F7FA; color:#333; padding:15px; border-radius:8px; font-size: 13px; font-family: monospace; white-space: pre-wrap;'>{texto}</div>", unsafe_allow_html=True)
+                    tab_tarjetas, tab_tabla = st.tabs(["🗂️ Vista Dinámica (Tarjetas)", "📊 Vista Original (Excel)"])
+                    
+                    with tab_tarjetas:
+                        st.info("💡 Exploración interactiva. Formato estructurado para descripciones geológicas de campo.")
+                        for index, row in df.iterrows():
+                            celdas_validas = [str(val) for val in row if pd.notna(val) and str(val).strip() != ""]
+                            
+                            if celdas_validas:
+                                with st.expander(f"🔹 Bloque de Registro Técnico (Fila {index + 1})", expanded=(index < 7)):
+                                    cols = st.columns(len(celdas_validas))
+                                    for i, texto in enumerate(celdas_validas):
+                                        with cols[i]:
+                                            st.markdown(f"<div style='background-color:#ffffff; color:#111111; padding:15px; border-left: 4px solid #002855; border-radius:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 13px; font-family: monospace; white-space: pre-wrap;'>{texto}</div>", unsafe_allow_html=True)
+                    with tab_tabla:
+                        st.dataframe(df, use_container_width=True)
 
 # ==========================================
-# PESTAÑA 3: PARTICIPANTES
+# PESTAÑA 3: PARTICIPANTES (CON SUB-MENÚS LIMPIOS)
 # ==========================================
 with tab_equipo:
-    st.markdown('<div class="section-title">Junta Directiva</div>', unsafe_allow_html=True)
-    st.write("""
-    Nuestra directiva planifica, organiza y ejecuta todas las actividades académicas, de campo y la gestión técnica de nuestra Litoteca.
+    sub_junta, sub_proyectos = st.tabs(["Junta Directiva", "Proyectos de Campo"])
     
-    * **Presidente(a):** [Nombre]
-    * **Vicepresidente(a):** [Nombre]
-    * **Secretario(a):** [Nombre]
-    * **Tesorero(a):** [Nombre]
-    * **Vocal de Litoteca:** Gary Bustinza
-    """)
+    with sub_junta:
+        st.write("")
+        st.markdown('<h3 class="section-title">Junta Directiva SEG UNAP</h3>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="info-text">
+            El Capítulo Estudiantil SEG UNAP está liderado por un equipo de estudiantes comprometidos con la difusión del conocimiento en geología económica.<br><br>
+            <ul>
+                <li><b>Presidente(a):</b> [Nombre]</li>
+                <li><b>Vicepresidente(a):</b> [Nombre]</li>
+                <li><b>Secretario(a):</b> [Nombre]</li>
+                <li><b>Tesorero(a):</b> [Nombre]</li>
+                <li><b>Vocal de Litoteca:</b> Gary Bustinza</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with sub_proyectos:
+        st.write("")
+        st.markdown('<h3 class="section-title">Proyectos de Investigación y Mapeo</h3>', unsafe_allow_html=True)
+        st.info("📌 Espacio reservado para documentar futuras salidas a terreno, recolección de muestras y análisis metalogenético en la región de Puno.")
 
 # ==========================================
 # PESTAÑA 4: FUNDACIONES
 # ==========================================
 with tab_fundacion:
-    st.markdown('<div class="section-title">Respaldo SEG Foundation</div>', unsafe_allow_html=True)
-    st.write("""
-    El Capítulo Estudiantil de la UNAP cuenta con el aval de la **Society of Economic Geologists Foundation (SEGF)**. A través de la membresía SEG, los estudiantes pueden postular a:
-    
-    * **Subvenciones de Investigación:** Fondos para financiar trabajos de tesis y análisis.
-    * **Apoyo para Viajes:** Becas para organizar excursiones a yacimientos y asistir a conferencias internacionales.
-    """)
+    st.write("")
+    st.markdown('<h3 class="section-title">Respaldo de la SEG Foundation</h3>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="info-text">
+        El Capítulo Estudiantil de la UNAP cuenta con el prestigioso aval y apoyo de la <b>Society of Economic Geologists Foundation (SEGF)</b>, pilar que sostiene el desarrollo de estudiantes de geología a nivel mundial.<br><br>
+        A través de la membresía SEG, los estudiantes pueden postular a:
+        <ul>
+            <li><b>Subvenciones de Investigación (Student Research Grants):</b> Fondos para financiar trabajos de tesis y análisis de laboratorio.</li>
+            <li><b>Apoyo para Viajes:</b> Becas para organizar excursiones a yacimientos y asistir a conferencias internacionales.</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
